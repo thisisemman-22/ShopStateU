@@ -50,7 +50,12 @@ public class UserController {
                 String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
                 File file = new File(uploadDirectory, uniqueFilename);
                 profilePicture.transferTo(file);
-                profilePictureUrl = "/uploads/" + uniqueFilename;
+                
+                String baseUrl = System.getenv("BASE_URL");
+                if (baseUrl == null || baseUrl.isEmpty()) {
+                    baseUrl = "https://shopstateu-89a3d63aed8a.herokuapp.com"; // Fallback for Heroku
+                }
+                profilePictureUrl = baseUrl + "/uploads/" + uniqueFilename;
             }
 
             User registeredUser = userService.registerUser(fullName, email, password, college, profilePictureUrl);
