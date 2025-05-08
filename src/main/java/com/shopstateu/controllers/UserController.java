@@ -40,7 +40,8 @@ public class UserController {
         try {
             String profilePictureUrl = null;
             if (profilePicture != null && !profilePicture.isEmpty()) {
-                File uploadDirectory = new File("src/main/resources/static/uploads");
+                // Save profile picture to uploads directory
+                File uploadDirectory = new File("uploads");
                 if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                     return ResponseEntity.status(500).body("Failed to create upload directory");
                 }
@@ -118,12 +119,11 @@ public class UserController {
                 return ResponseEntity.badRequest().body("Profile picture is required");
             }
 
-            // Explicitly define the path for the uploads directory
-            File uploadDirectory = new File("src/main/resources/static/uploads");
+            // Save new profile picture to uploads directory
+            File uploadDirectory = new File("uploads");
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }
-
             String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
             File file = new File(uploadDirectory, uniqueFilename);
             profilePicture.transferTo(file);
