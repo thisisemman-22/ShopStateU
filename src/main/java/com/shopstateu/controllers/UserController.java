@@ -78,7 +78,7 @@ public class UserController {
         if (user.isPresent()) {
             String token = jwtUtil.generateToken(user.get().getEmail());
             Map<String, Object> response = new HashMap<>();
-            response.put("token", "Bearer " + token);
+            response.put("token", token);
             response.put("userId", user.get().getId());
             return ResponseEntity.ok(response);
         } else {
