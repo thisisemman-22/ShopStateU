@@ -129,23 +129,23 @@ public class ProductController {
             @RequestParam Long userId,
             @RequestParam("images") MultipartFile[] images) {
         try {
-            // Ensure uploads directory exists
-            File uploadDirectory = new File(uploadDir);
+            // Define the public uploads directory
+            File uploadDirectory = new File("src/main/resources/static/uploads");
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }
 
-            // Save images to server with unique identifiers
+            // Save images to the public directory and generate public URLs
             StringBuilder imagePaths = new StringBuilder();
             for (MultipartFile image : images) {
                 if (image.isEmpty()) {
                     return ResponseEntity.badRequest().body("One or more images are empty");
                 }
                 String uniqueFilename = java.util.UUID.randomUUID() + "_" + image.getOriginalFilename();
-                String imagePath = uploadDirectory.getAbsolutePath() + File.separator + uniqueFilename;
-                File file = new File(imagePath);
+                File file = new File(uploadDirectory, uniqueFilename);
                 image.transferTo(file);
-                imagePaths.append(imagePath).append(",");
+                String publicUrl = "/uploads/" + uniqueFilename;
+                imagePaths.append(publicUrl).append(",");
             }
 
             // Create and save product
