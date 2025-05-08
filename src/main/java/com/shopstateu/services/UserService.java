@@ -48,7 +48,7 @@ public class UserService {
         user.setPassword(password); // Store password as plain text
         user.setCollege(college);
         user.setProfilePicture(profilePictureUrl);
-        user.setCreatedAt(LocalDateTime.now());
+        user.setCreatedAt(LocalDateTime.now()); // Keep LocalDateTime for database storage
 
         logger.debug("Saving user to database: {}", email);
         User savedUser = userRepository.save(user);

@@ -27,7 +27,7 @@ public class MessageService {
         message.setSenderName(senderName);
         message.setRecipientName(recipientName);
         message.setMessageContent(messageContent);
-        message.setTimestamp(LocalDateTime.now());
+        message.setTimestamp(LocalDateTime.now()); // Keep LocalDateTime for database storage
         return messageRepository.save(message);
     }
 }

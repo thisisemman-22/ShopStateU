@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -49,7 +50,8 @@ public class ProductController {
             productData.put("sellerName", product.getSellerName());
             productData.put("sellerCollege", product.getSellerCollege());
             productData.put("userId", product.getUser().getId());
-            productData.put("postedDate", product.getPostedDate());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd hh:mm a");
+            productData.put("postedDate", product.getPostedDate().format(formatter));
             return productData;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(response);
@@ -69,7 +71,8 @@ public class ProductController {
             productData.put("sellerName", product.getSellerName());
             productData.put("sellerCollege", product.getSellerCollege());
             productData.put("userId", product.getUser().getId());
-            productData.put("postedDate", product.getPostedDate());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd hh:mm a");
+            productData.put("postedDate", product.getPostedDate().format(formatter));
             return productData;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(response);
@@ -90,7 +93,8 @@ public class ProductController {
             productData.put("sellerName", product.getSellerName());
             productData.put("sellerCollege", product.getSellerCollege());
             productData.put("userId", product.getUser().getId());
-            productData.put("postedDate", product.getPostedDate());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd hh:mm a");
+            productData.put("postedDate", product.getPostedDate().format(formatter));
             return productData;
         }).collect(Collectors.toList());
         logger.debug("Found {} products for user ID: {}", response.size(), userId);
@@ -111,7 +115,8 @@ public class ProductController {
             productData.put("sellerName", product.getSellerName());
             productData.put("sellerCollege", product.getSellerCollege());
             productData.put("userId", product.getUser().getId());
-            productData.put("postedDate", product.getPostedDate());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd hh:mm a");
+            productData.put("postedDate", product.getPostedDate().format(formatter));
             return productData;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(response);
@@ -162,7 +167,7 @@ public class ProductController {
             product.setPrice(price);
             product.setSellerName(sellerName);
             product.setSellerCollege(sellerCollege);
-            product.setPostedDate(LocalDateTime.now());
+            product.setPostedDate(LocalDateTime.now()); // Keep LocalDateTime for database storage
             product.setImagePaths(imagePaths.toString());
 
             // Save product with user association
@@ -209,20 +214,21 @@ public class ProductController {
         productData.put("sellerName", product.getSellerName());
         productData.put("sellerCollege", product.getSellerCollege());
         productData.put("userId", product.getUser().getId());
-        productData.put("postedDate", product.getPostedDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd hh:mm a");
+        productData.put("postedDate", product.getPostedDate().format(formatter));
 
         return ResponseEntity.ok(productData);
     }
 
     @GetMapping("/{productId}/images")
-    public ResponseEntity<List<String>> getProductImages(@PathVariable Long productId) {
+    public ResponseEntity<Map<String, List<String>>> getProductImages(@PathVariable Long productId) {
         Product product = productService.getProductById(productId);
         if (product == null) {
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(404).body(Map.of("error", List.of("Product not found")));
         }
 
         List<String> imagePaths = product.getImagePaths() != null ? List.of(product.getImagePaths().split(",")) : List.of();
-        return ResponseEntity.ok(imagePaths);
+        return ResponseEntity.ok(Map.of("images", imagePaths));
     }
 
     @PutMapping
