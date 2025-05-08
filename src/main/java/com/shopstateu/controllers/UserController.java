@@ -133,10 +133,10 @@ public class UserController {
             File file = new File(uploadDirectory, uniqueFilename);
             profilePicture.transferTo(file);
 
-            // Generate the public URL using BASE_URL from application.properties
+            // Generate the public URL using BASE_URL or fallback to Heroku app domain
             String baseUrl = System.getenv("BASE_URL");
             if (baseUrl == null || baseUrl.isEmpty()) {
-                baseUrl = "http://localhost:8080"; // Fallback for local testing
+                baseUrl = "https://shopstateu-89a3d63aed8a.herokuapp.com"; // Fallback for Heroku
             }
             String profilePictureUrl = baseUrl + "/api/uploads/" + uniqueFilename;
 
