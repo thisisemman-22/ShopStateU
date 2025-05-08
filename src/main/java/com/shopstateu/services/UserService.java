@@ -18,7 +18,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User registerUser(String fullName, String email, String password, String college) {
+    public User registerUser(String fullName, String email, String password, String college, String profilePictureUrl) {
         logger.debug("Starting user registration for email: {}", email);
 
         logger.debug("Validating email: {}", email);
@@ -47,6 +47,7 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(password); // Store password as plain text
         user.setCollege(college);
+        user.setProfilePicture(profilePictureUrl);
         user.setCreatedAt(LocalDateTime.now());
 
         logger.debug("Saving user to database: {}", email);
@@ -54,6 +55,12 @@ public class UserService {
         logger.debug("User registered successfully with email: {}", email);
 
         return savedUser;
+    }
+
+    public User updateProfilePicture(Long userId, String profilePictureUrl) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        user.setProfilePicture(profilePictureUrl);
+        return userRepository.save(user);
     }
 
     public Optional<User> loginUser(String email, String password) {

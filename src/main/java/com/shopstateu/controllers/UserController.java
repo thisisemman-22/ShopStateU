@@ -6,7 +6,9 @@ import com.shopstateu.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +34,23 @@ public class UserController {
             @RequestParam String fullName,
             @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String college) {
+            @RequestParam String college,
+            @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture) {
         logger.debug("Received registration request for email: {}", email);
         try {
-            User registeredUser = userService.registerUser(fullName, email, password, college);
+            String profilePictureUrl = null;
+            if (profilePicture != null && !profilePicture.isEmpty()) {
+                File uploadDirectory = new File("src/main/resources/static/uploads");
+                if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
+                    return ResponseEntity.status(500).body("Failed to create upload directory");
+                }
+                String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
+                File file = new File(uploadDirectory, uniqueFilename);
+                profilePicture.transferTo(file);
+                profilePictureUrl = "/uploads/" + uniqueFilename;
+            }
+
+            User registeredUser = userService.registerUser(fullName, email, password, college, profilePictureUrl);
             logger.debug("User registered successfully: {}", registeredUser.getEmail());
             return ResponseEntity.ok(registeredUser);
         } catch (IllegalArgumentException e) {
@@ -91,6 +106,33 @@ public class UserController {
         } else {
             logger.warn("User not found for ID: {}", id);
             return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+    @PutMapping("/profile-picture")
+    public ResponseEntity<?> updateProfilePicture(
+            @RequestParam Long userId,
+            @RequestParam("profilePicture") MultipartFile profilePicture) {
+        try {
+            if (profilePicture == null || profilePicture.isEmpty()) {
+                return ResponseEntity.badRequest().body("Profile picture is required");
+            }
+
+            File uploadDirectory = new File("src/main/resources/static/uploads");
+            if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
+                return ResponseEntity.status(500).body("Failed to create upload directory");
+            }
+
+            String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
+            File file = new File(uploadDirectory, uniqueFilename);
+            profilePicture.transferTo(file);
+            String profilePictureUrl = "/uploads/" + uniqueFilename;
+
+            User updatedUser = userService.updateProfilePicture(userId, profilePictureUrl);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            logger.error("Error updating profile picture: {}", e.getMessage());
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
 

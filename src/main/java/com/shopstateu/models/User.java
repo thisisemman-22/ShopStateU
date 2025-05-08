@@ -26,6 +26,8 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private String profilePicture;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -73,5 +75,13 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }
