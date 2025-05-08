@@ -119,10 +119,12 @@ public class UserController {
                 return ResponseEntity.badRequest().body("Profile picture is required");
             }
 
-            // Use a writable directory for uploads
-            File uploadDirectory = new File("public/uploads");
-            if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
-                return ResponseEntity.status(500).body("Failed to create upload directory");
+            // Ensure the writable directory exists
+            File uploadDirectory = new File("/tmp/uploads");
+            if (!uploadDirectory.exists()) {
+                if (!uploadDirectory.mkdirs()) {
+                    return ResponseEntity.status(500).body("Failed to create upload directory");
+                }
             }
 
             // Save the profile picture
@@ -131,7 +133,7 @@ public class UserController {
             profilePicture.transferTo(file);
 
             // Generate the public URL
-            String profilePictureUrl = "/uploads/" + uniqueFilename;
+            String profilePictureUrl = "/api/uploads/" + uniqueFilename;
 
             // Update the user's profile picture in the database
             User updatedUser = userService.updateProfilePicture(userId, profilePictureUrl);
