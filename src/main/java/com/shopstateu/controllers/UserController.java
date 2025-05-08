@@ -41,9 +41,10 @@ public class UserController {
         try {
             String profilePictureUrl = null;
             if (profilePicture != null && !profilePicture.isEmpty()) {
-                // Define the public uploads directory
-                File uploadDirectory = new File("src/main/resources/static/uploads");
+                // Ensure the writable directory exists
+                File uploadDirectory = new File("/tmp/uploads");
                 if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
+                    logger.error("Failed to create upload directory: /tmp/uploads");
                     return ResponseEntity.status(500).body("Failed to create upload directory");
                 }
                 String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
@@ -122,10 +123,9 @@ public class UserController {
 
             // Ensure the writable directory exists
             File uploadDirectory = new File("/tmp/uploads");
-            if (!uploadDirectory.exists()) {
-                if (!uploadDirectory.mkdirs()) {
-                    return ResponseEntity.status(500).body("Failed to create upload directory");
-                }
+            if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
+                logger.error("Failed to create upload directory: /tmp/uploads");
+                return ResponseEntity.status(500).body("Failed to create upload directory");
             }
 
             // Save the profile picture
