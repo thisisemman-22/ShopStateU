@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -128,8 +127,7 @@ public class ProductController {
             @RequestParam String sellerName,
             @RequestParam String sellerCollege,
             @RequestParam Long userId,
-            @RequestParam("images") MultipartFile[] images,
-            HttpServletRequest request) {
+            @RequestParam("images") MultipartFile[] images) {
         try {
             // Ensure the writable directory exists
             File uploadDirectory = new File("/tmp/uploads");
@@ -141,7 +139,10 @@ public class ProductController {
 
             // Save images to the writable directory and generate public URLs
             StringBuilder imagePaths = new StringBuilder();
-            String baseUrl = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() != 80 && request.getServerPort() != 443 ? ":" + request.getServerPort() : "");
+            String baseUrl = System.getenv("BASE_URL");
+            if (baseUrl == null || baseUrl.isEmpty()) {
+                baseUrl = "http://localhost:8080"; // Fallback for local testing
+            }
             for (MultipartFile image : images) {
                 if (image.isEmpty()) {
                     return ResponseEntity.badRequest().body("One or more images are empty");
