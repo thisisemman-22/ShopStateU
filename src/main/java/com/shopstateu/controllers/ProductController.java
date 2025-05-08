@@ -129,8 +129,8 @@ public class ProductController {
             @RequestParam Long userId,
             @RequestParam("images") MultipartFile[] images) {
         try {
-            // Define the public uploads directory
-            File uploadDirectory = new File("src/main/resources/static/uploads");
+            // Use a writable directory for uploads
+            File uploadDirectory = new File("public/uploads");
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }

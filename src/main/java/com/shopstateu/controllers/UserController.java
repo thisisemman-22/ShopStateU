@@ -119,8 +119,8 @@ public class UserController {
                 return ResponseEntity.badRequest().body("Profile picture is required");
             }
 
-            // Define the public uploads directory
-            File uploadDirectory = new File("src/main/resources/static/uploads");
+            // Use a writable directory for uploads
+            File uploadDirectory = new File("public/uploads");
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }
@@ -138,6 +138,21 @@ public class UserController {
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
             logger.error("Error updating profile picture: {}", e.getMessage());
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    // Add a new endpoint to serve uploaded files dynamically
+    @GetMapping("/uploads/{filename}")
+    public ResponseEntity<?> serveFile(@PathVariable String filename) {
+        try {
+            File file = new File("public/uploads/" + filename);
+            if (!file.exists()) {
+                return ResponseEntity.status(404).body("File not found");
+            }
+            return ResponseEntity.ok().body(new org.springframework.core.io.FileSystemResource(file));
+        } catch (Exception e) {
+            logger.error("Error serving file: {}", e.getMessage());
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
