@@ -9,6 +9,8 @@ com\shopstateu\ShopstateuApplication.class
 com\shopstateu\models\Product.class
 com\shopstateu\repositories\UserRepository.class
 com\shopstateu\repositories\ProductRepository.class
+com\shopstateu\utils\JwtFilter.class
+com\shopstateu\utils\JwtUtil.class
 com\shopstateu\repositories\MessageRepository.class
 com\shopstateu\models\SavedItem.class
 com\shopstateu\models\NotificationSettings.class
@@ -17,6 +19,7 @@ com\shopstateu\services\MessageService.class
 com\shopstateu\controllers\NotificationSettingsController.class
 com\shopstateu\SecurityConfig.class
 com\shopstateu\controllers\SavedItemController.class
+com\shopstateu\SecurityConfig$1.class
 com\shopstateu\models\Message.class
 com\shopstateu\services\SavedItemService.class
 com\shopstateu\controllers\MessageController.class
