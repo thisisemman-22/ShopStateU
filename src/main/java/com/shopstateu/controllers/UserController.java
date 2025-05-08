@@ -124,11 +124,16 @@ public class UserController {
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }
+
+            // Save the profile picture
             String uniqueFilename = java.util.UUID.randomUUID() + "_" + profilePicture.getOriginalFilename();
             File file = new File(uploadDirectory, uniqueFilename);
             profilePicture.transferTo(file);
+
+            // Generate the public URL
             String profilePictureUrl = "/uploads/" + uniqueFilename;
 
+            // Update the user's profile picture in the database
             User updatedUser = userService.updateProfilePicture(userId, profilePictureUrl);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
