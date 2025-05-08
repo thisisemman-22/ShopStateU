@@ -193,6 +193,38 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<Map<String, Object>> getProductDetails(@PathVariable Long productId) {
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return ResponseEntity.status(404).body(Map.of("error", "Product not found"));
+        }
+
+        Map<String, Object> productData = new LinkedHashMap<>();
+        productData.put("id", product.getId());
+        productData.put("name", product.getName());
+        productData.put("description", product.getDescription());
+        productData.put("category", product.getCategory());
+        productData.put("price", product.getPrice());
+        productData.put("sellerName", product.getSellerName());
+        productData.put("sellerCollege", product.getSellerCollege());
+        productData.put("userId", product.getUser().getId());
+        productData.put("postedDate", product.getPostedDate());
+
+        return ResponseEntity.ok(productData);
+    }
+
+    @GetMapping("/{productId}/images")
+    public ResponseEntity<List<String>> getProductImages(@PathVariable Long productId) {
+        Product product = productService.getProductById(productId);
+        if (product == null) {
+            return ResponseEntity.status(404).body(null);
+        }
+
+        List<String> imagePaths = product.getImagePaths() != null ? List.of(product.getImagePaths().split(",")) : List.of();
+        return ResponseEntity.ok(imagePaths);
+    }
+
     @PutMapping
     public ResponseEntity<?> updateProduct(
             @RequestParam Long id,
