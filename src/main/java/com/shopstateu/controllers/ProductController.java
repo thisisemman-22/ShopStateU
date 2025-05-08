@@ -141,7 +141,7 @@ public class ProductController {
             StringBuilder imagePaths = new StringBuilder();
             String baseUrl = System.getenv("BASE_URL");
             if (baseUrl == null || baseUrl.isEmpty()) {
-                baseUrl = "http://localhost:8080"; // Fallback for local testing
+                baseUrl = "https://shopstateu-89a3d63aed8a.herokuapp.com"; // Fallback for Heroku
             }
             for (MultipartFile image : images) {
                 if (image.isEmpty()) {
