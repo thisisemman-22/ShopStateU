@@ -25,7 +25,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Value("${file.upload-dir}")
+    @Value("${UPLOAD_DIR:uploads}")
     private String uploadDir;
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
