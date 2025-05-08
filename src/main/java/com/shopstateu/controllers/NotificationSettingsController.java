@@ -3,10 +3,13 @@ package com.shopstateu.controllers;
 import com.shopstateu.models.NotificationSettings;
 import com.shopstateu.services.NotificationSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -37,5 +40,14 @@ public class NotificationSettingsController {
         String username = authentication.getName();
         NotificationSettings settings = notificationSettingsService.updateNotificationSettingsByUserEmail(username, newMessages, newComments, newOffers, exclusiveDeals, featureUpdates);
         return ResponseEntity.ok(settings);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleException(Exception ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return errorResponse;
     }
 }

@@ -3,10 +3,13 @@ package com.shopstateu.controllers;
 import com.shopstateu.models.Message;
 import com.shopstateu.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/messages")
@@ -41,5 +44,14 @@ public class MessageController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("An error occurred while sending the message: " + e.getMessage());
         }
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleException(Exception ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return errorResponse;
     }
 }

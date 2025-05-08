@@ -4,6 +4,7 @@ import com.shopstateu.models.SavedItem;
 import com.shopstateu.services.SavedItemService;
 import com.shopstateu.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +72,14 @@ public class SavedItemController {
         String username = authentication.getName();
         savedItemService.unsaveItemByUserEmail(username, productId);
         return ResponseEntity.ok("Item unsaved successfully");
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleException(Exception ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+        return errorResponse;
     }
 }
