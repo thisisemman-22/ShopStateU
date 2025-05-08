@@ -60,9 +60,11 @@ public class SecurityConfig {
             }
 
             @Override
-            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/uploads/**")
-                        .addResourceLocations("file:/tmp/uploads/");
+                        .addResourceLocations("file:/tmp/uploads/")
+                        .setCachePeriod(3600) // Cache for 1 hour
+                        .resourceChain(true);
             }
         };
     }
