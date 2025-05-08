@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -113,7 +115,8 @@ public class UserController {
     @PutMapping("/profile-picture")
     public ResponseEntity<?> updateProfilePicture(
             @RequestParam Long userId,
-            @RequestParam("profilePicture") MultipartFile profilePicture) {
+            @RequestParam("profilePicture") MultipartFile profilePicture,
+            HttpServletRequest request) {
         try {
             if (profilePicture == null || profilePicture.isEmpty()) {
                 return ResponseEntity.badRequest().body("Profile picture is required");
@@ -133,7 +136,8 @@ public class UserController {
             profilePicture.transferTo(file);
 
             // Generate the public URL
-            String profilePictureUrl = "/api/uploads/" + uniqueFilename;
+            String baseUrl = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() != 80 && request.getServerPort() != 443 ? ":" + request.getServerPort() : "");
+            String profilePictureUrl = baseUrl + "/api/uploads/" + uniqueFilename;
 
             // Update the user's profile picture in the database
             User updatedUser = userService.updateProfilePicture(userId, profilePictureUrl);

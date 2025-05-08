@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -127,7 +128,8 @@ public class ProductController {
             @RequestParam String sellerName,
             @RequestParam String sellerCollege,
             @RequestParam Long userId,
-            @RequestParam("images") MultipartFile[] images) {
+            @RequestParam("images") MultipartFile[] images,
+            HttpServletRequest request) {
         try {
             // Ensure the writable directory exists
             File uploadDirectory = new File("/tmp/uploads");
@@ -139,6 +141,7 @@ public class ProductController {
 
             // Save images to the writable directory and generate public URLs
             StringBuilder imagePaths = new StringBuilder();
+            String baseUrl = request.getScheme() + "://" + request.getServerName() + (request.getServerPort() != 80 && request.getServerPort() != 443 ? ":" + request.getServerPort() : "");
             for (MultipartFile image : images) {
                 if (image.isEmpty()) {
                     return ResponseEntity.badRequest().body("One or more images are empty");
@@ -146,7 +149,7 @@ public class ProductController {
                 String uniqueFilename = java.util.UUID.randomUUID() + "_" + image.getOriginalFilename();
                 File file = new File(uploadDirectory, uniqueFilename);
                 image.transferTo(file);
-                String publicUrl = "/api/uploads/" + uniqueFilename;
+                String publicUrl = baseUrl + "/api/uploads/" + uniqueFilename;
                 imagePaths.append(publicUrl).append(",");
             }
 
