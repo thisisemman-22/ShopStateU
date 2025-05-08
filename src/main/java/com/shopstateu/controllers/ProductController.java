@@ -150,7 +150,7 @@ public class ProductController {
                 String uniqueFilename = java.util.UUID.randomUUID() + "_" + image.getOriginalFilename();
                 File file = new File(uploadDirectory, uniqueFilename);
                 image.transferTo(file);
-                String publicUrl = baseUrl + "/api/uploads/" + uniqueFilename;
+                String publicUrl = baseUrl + "/uploads/" + uniqueFilename;
                 imagePaths.append(publicUrl).append(",");
             }
 

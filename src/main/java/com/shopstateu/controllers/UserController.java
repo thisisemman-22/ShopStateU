@@ -138,7 +138,7 @@ public class UserController {
             if (baseUrl == null || baseUrl.isEmpty()) {
                 baseUrl = "https://shopstateu-89a3d63aed8a.herokuapp.com"; // Fallback for Heroku
             }
-            String profilePictureUrl = baseUrl + "/api/uploads/" + uniqueFilename;
+            String profilePictureUrl = baseUrl + "/uploads/" + uniqueFilename;
 
             // Update the user's profile picture in the database
             User updatedUser = userService.updateProfilePicture(userId, profilePictureUrl);
