@@ -45,7 +45,7 @@ public class ProductController {
             productData.put("description", product.getDescription());
             productData.put("category", product.getCategory());
             productData.put("price", product.getPrice());
-            productData.put("imagePaths", product.getImagePaths() != null ? List.of(product.getImagePaths().split(",")) : List.of());
+            productData.put("imagePath", product.getImagePaths() != null ? product.getImagePaths().split(",")[0] : null);
             productData.put("sellerName", product.getSellerName());
             productData.put("sellerCollege", product.getSellerCollege());
             productData.put("userId", product.getUser().getId());
