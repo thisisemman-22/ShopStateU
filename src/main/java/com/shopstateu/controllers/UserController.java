@@ -118,7 +118,8 @@ public class UserController {
                 return ResponseEntity.badRequest().body("Profile picture is required");
             }
 
-            File uploadDirectory = new File("src/main/resources/static/uploads");
+            // Use a relative path for the uploads directory
+            File uploadDirectory = new File("uploads");
             if (!uploadDirectory.exists() && !uploadDirectory.mkdirs()) {
                 return ResponseEntity.status(500).body("Failed to create upload directory");
             }
