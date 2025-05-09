@@ -78,7 +78,7 @@ public class UserService {
     public String getProfilePictureByName(String name) {
         Optional<User> user = userRepository.findByFullName(name); // Assuming 'findByFullName' exists in UserRepository
         if (user.isPresent() && user.get().getProfilePicture() != null) {
-            return "https://shopstateu-89a3d63aed8a.herokuapp.com/uploads/" + user.get().getProfilePicture(); // Updated domain
+            return user.get().getProfilePicture(); // Directly return the stored URL
         }
         return null; // Return null if user or profile picture is not found
     }
