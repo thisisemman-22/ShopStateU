@@ -1192,7 +1192,7 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                   )!;
                                                   safeSetState(() {});
                                                   GoRouter.of(context)
-                                                      .prepareAuthEvent();
+                                                      .prepareAuthEvent(true);
                                                   await authManager.signIn(
                                                     authenticationToken:
                                                         UserAccountsGroup
@@ -1214,9 +1214,10 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                   );
 
                                                   context.goNamedAuth(
-                                                      MarketplaceWidget
-                                                          .routeName,
-                                                      context.mounted);
+                                                    MarketplaceWidget.routeName,
+                                                    context.mounted,
+                                                    ignoreRedirect: true,
+                                                  );
 
                                                   if (_shouldSetState)
                                                     safeSetState(() {});
