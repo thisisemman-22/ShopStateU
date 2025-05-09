@@ -30,26 +30,24 @@ public class SavedItemController {
         String username = authentication.getName();
         List<SavedItem> savedItems = savedItemService.getSavedItemsByUserEmail(username);
 
-        // Fetch product details for each saved item
+        // Fetch product details for each saved item and flatten the response
         List<Map<String, Object>> savedItemsWithDetails = savedItems.stream().map(savedItem -> {
-            Map<String, Object> itemDetails = new HashMap<>();
-            itemDetails.put("savedItem", savedItem);
-            productRepository.findById(savedItem.getProductId()).ifPresent(product -> {
+            return productRepository.findById(savedItem.getProductId()).map(product -> {
                 Map<String, Object> productData = new LinkedHashMap<>();
                 productData.put("id", product.getId());
                 productData.put("name", product.getName());
                 productData.put("description", product.getDescription());
                 productData.put("category", product.getCategory());
                 productData.put("price", product.getPrice());
-                productData.put("imagePaths", product.getImagePaths() != null ? List.of(product.getImagePaths().split(",")) : List.of());
+                productData.put("imagePath", product.getImagePaths() != null ? 
+                    product.getImagePaths().split(",")[0] : null);
                 productData.put("sellerName", product.getSellerName());
                 productData.put("sellerCollege", product.getSellerCollege());
                 productData.put("userId", product.getUser().getId());
                 productData.put("postedDate", product.getPostedDate());
-                itemDetails.put("product", productData);
-            });
-            return itemDetails;
-        }).collect(Collectors.toList());
+                return productData;
+            }).orElse(null);
+        }).filter(item -> item != null).collect(Collectors.toList());
 
         return ResponseEntity.ok(savedItemsWithDetails);
     }
