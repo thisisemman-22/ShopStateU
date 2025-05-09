@@ -1,1 +1,0 @@
-web: java -jar target/shopstateu-backend-1.0-SNAPSHOT.jar
