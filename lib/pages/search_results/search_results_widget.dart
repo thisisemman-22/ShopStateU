@@ -550,7 +550,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                     0.0, 0.0),
                                                 child: Text(
                                                   valueOrDefault<String>(
-                                                    'P${(SearchProductsCall.productPrice(
+                                                    'P${(SearchProductsCall.productPriceLegit(
                                                       (_model.searchProductsAPI
                                                               ?.jsonBody ??
                                                           ''),

@@ -289,7 +289,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                           FFAppState().searchQuery = _model.choiceChipsValue!;
                           safeSetState(() {});
 
-                          context.pushNamed(SearchPageWidget.routeName);
+                          context.pushNamed(SearchResultsWidget.routeName);
                         },
                         selectedChipStyle: ChipStyle(
                           backgroundColor: FlutterFlowTheme.of(context).primary,

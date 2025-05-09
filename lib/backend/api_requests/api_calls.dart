@@ -554,7 +554,7 @@ class SearchProductsCall {
           .map((x) => castToType<String>(x))
           .withoutNulls
           .toList();
-  static List<double>? productPrice(dynamic response) => (getJsonField(
+  static List<double>? productPriceLegit(dynamic response) => (getJsonField(
         response,
         r'''$[:].price''',
         true,
