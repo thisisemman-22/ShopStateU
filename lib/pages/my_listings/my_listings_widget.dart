@@ -99,7 +99,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pop();
+              context.pushNamed(ProfileWidget.routeName);
             },
           ),
           title: Text(

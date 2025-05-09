@@ -452,17 +452,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       _shouldSetState = true;
                                       if ((_model.userLogin?.succeeded ??
                                           true)) {
-                                        FFAppState().bearerToken =
-                                            UserAccountsGroup.userLoginCall
-                                                .bearerToken(
-                                          (_model.userLogin?.jsonBody ?? ''),
-                                        )!;
-                                        FFAppState().userID = UserAccountsGroup
-                                            .userLoginCall
-                                            .userID(
-                                          (_model.userLogin?.jsonBody ?? ''),
-                                        )!;
-                                        safeSetState(() {});
                                         GoRouter.of(context).prepareAuthEvent();
                                         await authManager.signIn(
                                           authenticationToken: UserAccountsGroup
@@ -478,6 +467,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               )
                                               ?.toString(),
                                         );
+                                        FFAppState().bearerToken =
+                                            UserAccountsGroup.userLoginCall
+                                                .bearerToken(
+                                          (_model.userLogin?.jsonBody ?? ''),
+                                        )!;
+                                        FFAppState().userID = UserAccountsGroup
+                                            .userLoginCall
+                                            .userID(
+                                          (_model.userLogin?.jsonBody ?? ''),
+                                        )!;
+                                        safeSetState(() {});
                                         _model.getUserProfileAPI =
                                             await UserAccountsGroup
                                                 .getUserProfileCall
@@ -558,7 +558,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               return AlertDialog(
                                                 title: Text('Error'),
                                                 content: Text((_model
-                                                        .userLogin?.bodyText ??
+                                                        .getUserProfileAPI
+                                                        ?.bodyText ??
                                                     '')),
                                                 actions: [
                                                   TextButton(

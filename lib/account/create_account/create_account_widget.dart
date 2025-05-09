@@ -1,4 +1,3 @@
-import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -1128,110 +1127,20 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                 safeSetState(() {});
                                               return;
                                             } else {
-                                              _model.userRegistrationAPI =
-                                                  await UserAccountsGroup
-                                                      .userRegistrationCall
-                                                      .call(
-                                                fullName: _model
-                                                    .fullNameTextController
-                                                    .text,
-                                                email: _model
-                                                    .emailAddressTextController
-                                                    .text,
-                                                password: _model
-                                                    .passwordTextController
-                                                    .text,
-                                                college: _model.dropDownValue,
-                                                profilePicture:
-                                                    _model.uploadedLocalFile,
-                                              );
-
-                                              _shouldSetState = true;
-                                              if ((_model.userRegistrationAPI
-                                                      ?.succeeded ??
-                                                  true)) {
-                                                _model.userLoginAPI =
-                                                    await UserAccountsGroup
-                                                        .userLoginCall
-                                                        .call(
-                                                  email: UserAccountsGroup
-                                                      .userRegistrationCall
-                                                      .email(
-                                                    (_model.userRegistrationAPI
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ),
-                                                  password: UserAccountsGroup
-                                                      .userRegistrationCall
-                                                      .password(
-                                                    (_model.userRegistrationAPI
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ),
-                                                );
-
-                                                _shouldSetState = true;
-                                                if ((_model.userLoginAPI
-                                                        ?.succeeded ??
-                                                    true)) {
-                                                  FFAppState().bearerToken =
-                                                      UserAccountsGroup
-                                                          .userLoginCall
-                                                          .bearerToken(
-                                                    (_model.userLoginAPI
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!;
-                                                  FFAppState().userID =
-                                                      UserAccountsGroup
-                                                          .userLoginCall
-                                                          .userID(
-                                                    (_model.userLoginAPI
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!;
-                                                  safeSetState(() {});
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  await authManager.signIn(
-                                                    authenticationToken:
-                                                        UserAccountsGroup
-                                                            .userLoginCall
-                                                            .userID(
-                                                              (_model.userLoginAPI
-                                                                      ?.jsonBody ??
-                                                                  ''),
-                                                            )
-                                                            ?.toString(),
-                                                    authUid: UserAccountsGroup
-                                                        .userLoginCall
-                                                        .userID(
-                                                          (_model.userLoginAPI
-                                                                  ?.jsonBody ??
-                                                              ''),
-                                                        )
-                                                        ?.toString(),
-                                                  );
-
-                                                  context.goNamedAuth(
-                                                      MarketplaceWidget
-                                                          .routeName,
-                                                      context.mounted);
-
-                                                  if (_shouldSetState)
-                                                    safeSetState(() {});
-                                                  return;
-                                                } else {
+                                              if ((_model.uploadedLocalFile
+                                                          .bytes?.isNotEmpty ??
+                                                      false)) {
+                                                if (_model.fullNameTextController
+                                                            .text ==
+                                                        '') {
                                                   await showDialog(
                                                     context: context,
                                                     builder:
                                                         (alertDialogContext) {
                                                       return AlertDialog(
-                                                        title: Text('Error'),
-                                                        content: Text((_model
-                                                                .userLoginAPI
-                                                                ?.bodyText ??
-                                                            '')),
+                                                        title: Text('No Name'),
+                                                        content: Text(
+                                                            'A name is required. Please enter your full name.'),
                                                         actions: [
                                                           TextButton(
                                                             onPressed: () =>
@@ -1246,6 +1155,146 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                   if (_shouldSetState)
                                                     safeSetState(() {});
                                                   return;
+                                                } else {
+                                                  if (_model.emailAddressTextController
+                                                              .text !=
+                                                          '') {
+                                                    if (_model.dropDownValue !=
+                                                            null &&
+                                                        _model.dropDownValue !=
+                                                            '') {
+                                                      _model.userRegistrationAPI =
+                                                          await UserAccountsGroup
+                                                              .userRegistrationCall
+                                                              .call(
+                                                        fullName: _model
+                                                            .fullNameTextController
+                                                            .text,
+                                                        email: _model
+                                                            .emailAddressTextController
+                                                            .text,
+                                                        password: _model
+                                                            .passwordTextController
+                                                            .text,
+                                                        college: _model
+                                                            .dropDownValue,
+                                                        profilePicture: _model
+                                                            .uploadedLocalFile,
+                                                      );
+
+                                                      _shouldSetState = true;
+                                                      if ((_model
+                                                              .userRegistrationAPI
+                                                              ?.succeeded ??
+                                                          true)) {
+                                                        await showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (alertDialogContext) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                  'Account Created'),
+                                                              content: Text(
+                                                                  'You have successfully signed up for ShopStateU. Please log in.'),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext),
+                                                                  child: Text(
+                                                                      'Ok'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      } else {
+                                                        await showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (alertDialogContext) {
+                                                            return AlertDialog(
+                                                              title:
+                                                                  Text('Error'),
+                                                              content: Text((_model
+                                                                      .userRegistrationAPI
+                                                                      ?.bodyText ??
+                                                                  '')),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          alertDialogContext),
+                                                                  child: Text(
+                                                                      'Ok'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                        if (_shouldSetState)
+                                                          safeSetState(() {});
+                                                        return;
+                                                      }
+
+                                                      context.pushNamed(
+                                                          LoginWidget
+                                                              .routeName);
+
+                                                      if (_shouldSetState)
+                                                        safeSetState(() {});
+                                                      return;
+                                                    } else {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (alertDialogContext) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                'No College'),
+                                                            content: Text(
+                                                                'Please select a college and try again.'),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext),
+                                                                child:
+                                                                    Text('Ok'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                      if (_shouldSetState)
+                                                        safeSetState(() {});
+                                                      return;
+                                                    }
+                                                  } else {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder:
+                                                          (alertDialogContext) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Email is Required'),
+                                                          content: Text(
+                                                              'An email is required. Please enter your BatStateU email address.'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext),
+                                                              child: Text('Ok'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                    if (_shouldSetState)
+                                                      safeSetState(() {});
+                                                    return;
+                                                  }
                                                 }
                                               } else {
                                                 await showDialog(
@@ -1253,11 +1302,10 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                   builder:
                                                       (alertDialogContext) {
                                                     return AlertDialog(
-                                                      title: Text('Error'),
-                                                      content: Text((_model
-                                                              .userRegistrationAPI
-                                                              ?.bodyText ??
-                                                          '')),
+                                                      title: Text(
+                                                          'No Profile Picture'),
+                                                      content: Text(
+                                                          'Profile picture is required. '),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () =>

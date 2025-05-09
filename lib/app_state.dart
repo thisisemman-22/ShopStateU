@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:csv/csv.dart';
-import 'package:synchronized/synchronized.dart';
-import 'flutter_flow/flutter_flow_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -18,38 +15,33 @@ class FFAppState extends ChangeNotifier {
   }
 
   Future initializePersistedState() async {
-    secureStorage = FlutterSecureStorage();
-    await _safeInitAsync(() async {
-      _bearerToken =
-          await secureStorage.getString('ff_bearerToken') ?? _bearerToken;
+    prefs = await SharedPreferences.getInstance();
+    _safeInit(() {
+      _bearerToken = prefs.getString('ff_bearerToken') ?? _bearerToken;
     });
-    await _safeInitAsync(() async {
-      _userID = await secureStorage.getInt('ff_userID') ?? _userID;
+    _safeInit(() {
+      _userID = prefs.getInt('ff_userID') ?? _userID;
     });
-    await _safeInitAsync(() async {
-      _PersistUserId =
-          await secureStorage.getInt('ff_PersistUserId') ?? _PersistUserId;
+    _safeInit(() {
+      _PersistUserId = prefs.getInt('ff_PersistUserId') ?? _PersistUserId;
     });
-    await _safeInitAsync(() async {
-      _persistFullName = await secureStorage.getString('ff_persistFullName') ??
-          _persistFullName;
+    _safeInit(() {
+      _persistFullName =
+          prefs.getString('ff_persistFullName') ?? _persistFullName;
     });
-    await _safeInitAsync(() async {
-      _persistEmail =
-          await secureStorage.getString('ff_persistEmail') ?? _persistEmail;
+    _safeInit(() {
+      _persistEmail = prefs.getString('ff_persistEmail') ?? _persistEmail;
     });
-    await _safeInitAsync(() async {
-      _persistPassword = await secureStorage.getString('ff_persistPassword') ??
-          _persistPassword;
+    _safeInit(() {
+      _persistPassword =
+          prefs.getString('ff_persistPassword') ?? _persistPassword;
     });
-    await _safeInitAsync(() async {
-      _persistCollege =
-          await secureStorage.getString('ff_persistCollege') ?? _persistCollege;
+    _safeInit(() {
+      _persistCollege = prefs.getString('ff_persistCollege') ?? _persistCollege;
     });
-    await _safeInitAsync(() async {
+    _safeInit(() {
       _persistProfilePicture =
-          await secureStorage.getString('ff_persistProfilePicture') ??
-              _persistProfilePicture;
+          prefs.getString('ff_persistProfilePicture') ?? _persistProfilePicture;
     });
   }
 
@@ -58,7 +50,7 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  late FlutterSecureStorage secureStorage;
+  late SharedPreferences prefs;
 
   String _emailCreateAccount = '';
   String get emailCreateAccount => _emailCreateAccount;
@@ -111,22 +103,14 @@ class FFAppState extends ChangeNotifier {
   String get bearerToken => _bearerToken;
   set bearerToken(String value) {
     _bearerToken = value;
-    secureStorage.setString('ff_bearerToken', value);
-  }
-
-  void deleteBearerToken() {
-    secureStorage.delete(key: 'ff_bearerToken');
+    prefs.setString('ff_bearerToken', value);
   }
 
   int _userID = 0;
   int get userID => _userID;
   set userID(int value) {
     _userID = value;
-    secureStorage.setInt('ff_userID', value);
-  }
-
-  void deleteUserID() {
-    secureStorage.delete(key: 'ff_userID');
+    prefs.setInt('ff_userID', value);
   }
 
   String _searchQueryOrCategory = '';
@@ -157,66 +141,42 @@ class FFAppState extends ChangeNotifier {
   int get PersistUserId => _PersistUserId;
   set PersistUserId(int value) {
     _PersistUserId = value;
-    secureStorage.setInt('ff_PersistUserId', value);
-  }
-
-  void deletePersistUserId() {
-    secureStorage.delete(key: 'ff_PersistUserId');
+    prefs.setInt('ff_PersistUserId', value);
   }
 
   String _persistFullName = '';
   String get persistFullName => _persistFullName;
   set persistFullName(String value) {
     _persistFullName = value;
-    secureStorage.setString('ff_persistFullName', value);
-  }
-
-  void deletePersistFullName() {
-    secureStorage.delete(key: 'ff_persistFullName');
+    prefs.setString('ff_persistFullName', value);
   }
 
   String _persistEmail = '';
   String get persistEmail => _persistEmail;
   set persistEmail(String value) {
     _persistEmail = value;
-    secureStorage.setString('ff_persistEmail', value);
-  }
-
-  void deletePersistEmail() {
-    secureStorage.delete(key: 'ff_persistEmail');
+    prefs.setString('ff_persistEmail', value);
   }
 
   String _persistPassword = '';
   String get persistPassword => _persistPassword;
   set persistPassword(String value) {
     _persistPassword = value;
-    secureStorage.setString('ff_persistPassword', value);
-  }
-
-  void deletePersistPassword() {
-    secureStorage.delete(key: 'ff_persistPassword');
+    prefs.setString('ff_persistPassword', value);
   }
 
   String _persistCollege = '';
   String get persistCollege => _persistCollege;
   set persistCollege(String value) {
     _persistCollege = value;
-    secureStorage.setString('ff_persistCollege', value);
-  }
-
-  void deletePersistCollege() {
-    secureStorage.delete(key: 'ff_persistCollege');
+    prefs.setString('ff_persistCollege', value);
   }
 
   String _persistProfilePicture = '';
   String get persistProfilePicture => _persistProfilePicture;
   set persistProfilePicture(String value) {
     _persistProfilePicture = value;
-    secureStorage.setString('ff_persistProfilePicture', value);
-  }
-
-  void deletePersistProfilePicture() {
-    secureStorage.delete(key: 'ff_persistProfilePicture');
+    prefs.setString('ff_persistProfilePicture', value);
   }
 
   int _openedID = 0;
@@ -349,47 +309,4 @@ Future _safeInitAsync(Function() initializeField) async {
   try {
     await initializeField();
   } catch (_) {}
-}
-
-extension FlutterSecureStorageExtensions on FlutterSecureStorage {
-  static final _lock = Lock();
-
-  Future<void> writeSync({required String key, String? value}) async =>
-      await _lock.synchronized(() async {
-        await write(key: key, value: value);
-      });
-
-  void remove(String key) => delete(key: key);
-
-  Future<String?> getString(String key) async => await read(key: key);
-  Future<void> setString(String key, String value) async =>
-      await writeSync(key: key, value: value);
-
-  Future<bool?> getBool(String key) async => (await read(key: key)) == 'true';
-  Future<void> setBool(String key, bool value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<int?> getInt(String key) async =>
-      int.tryParse(await read(key: key) ?? '');
-  Future<void> setInt(String key, int value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<double?> getDouble(String key) async =>
-      double.tryParse(await read(key: key) ?? '');
-  Future<void> setDouble(String key, double value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<List<String>?> getStringList(String key) async =>
-      await read(key: key).then((result) {
-        if (result == null || result.isEmpty) {
-          return null;
-        }
-        return CsvToListConverter()
-            .convert(result)
-            .first
-            .map((e) => e.toString())
-            .toList();
-      });
-  Future<void> setStringList(String key, List<String> value) async =>
-      await writeSync(key: key, value: ListToCsvConverter().convert([value]));
 }

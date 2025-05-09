@@ -1215,9 +1215,6 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                                                           .none),
                                                             );
                                                           }),
-                                                        FilteringTextInputFormatter
-                                                            .allow(
-                                                                RegExp('[0-9]'))
                                                       ],
                                                     ),
                                                   ].divide(

@@ -36,8 +36,6 @@ class CreateAccountModel extends FlutterFlowModel<CreateAccountWidget> {
       passwordConfirmTextControllerValidator;
   // Stores action output result for [Backend Call - API (User Registration)] action in Button widget.
   ApiCallResponse? userRegistrationAPI;
-  // Stores action output result for [Backend Call - API (User Login)] action in Button widget.
-  ApiCallResponse? userLoginAPI;
 
   @override
   void initState(BuildContext context) {
