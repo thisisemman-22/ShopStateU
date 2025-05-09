@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -586,15 +587,11 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                   child: FlutterFlowDropDown<String>(
                                     controller:
                                         _model.dropDownValueController ??=
-                                            FormFieldController<String>(
-                                      _model.dropDownValue ??= '',
-                                    ),
-                                    options: List<String>.from(
-                                        ['COE', 'CAFAD', 'CICS', 'CET']),
-                                    optionLabels: [
+                                            FormFieldController<String>(null),
+                                    options: [
                                       'College of Engineering',
-                                      'College of Fine Arts and Design',
                                       'College of Informatics and Computing Sciences',
+                                      'College of Fine Arts and Design',
                                       'College of Engineering Technology'
                                     ],
                                     onChanged: (val) => safeSetState(
@@ -1194,10 +1191,32 @@ class _CreateAccountWidgetState extends State<CreateAccountWidget> {
                                                         ''),
                                                   )!;
                                                   safeSetState(() {});
+                                                  GoRouter.of(context)
+                                                      .prepareAuthEvent();
+                                                  await authManager.signIn(
+                                                    authenticationToken:
+                                                        UserAccountsGroup
+                                                            .userLoginCall
+                                                            .userID(
+                                                              (_model.userLoginAPI
+                                                                      ?.jsonBody ??
+                                                                  ''),
+                                                            )
+                                                            ?.toString(),
+                                                    authUid: UserAccountsGroup
+                                                        .userLoginCall
+                                                        .userID(
+                                                          (_model.userLoginAPI
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        )
+                                                        ?.toString(),
+                                                  );
 
-                                                  context.goNamed(
+                                                  context.goNamedAuth(
                                                       MarketplaceWidget
-                                                          .routeName);
+                                                          .routeName,
+                                                      context.mounted);
 
                                                   if (_shouldSetState)
                                                     safeSetState(() {});

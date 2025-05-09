@@ -1,7 +1,9 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_messages_yet_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,25 +39,25 @@ class _SentMessagesWidgetState extends State<SentMessagesWidget> {
       );
 
       if ((_model.getSentMessagesAPI?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('An error has occured.'),
+              content: Text((_model.getSentMessagesAPI?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('An error has occured.'),
-            content: Text((_model.getSentMessagesAPI?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -129,6 +131,9 @@ class _SentMessagesWidgetState extends State<SentMessagesWidget> {
                         (_model.getSentMessagesAPI?.jsonBody ?? ''),
                       )?.toList() ??
                       [];
+                  if (recipientNameChild.isEmpty) {
+                    return NoMessagesYetWidget();
+                  }
 
                   return RefreshIndicator(
                     color: FlutterFlowTheme.of(context).primary,
@@ -256,7 +261,7 @@ class _SentMessagesWidgetState extends State<SentMessagesWidget> {
                                                                       .fontStyle,
                                                                 ),
                                                       ),
-                                                      Text(
+                                                      AutoSizeText(
                                                         valueOrDefault<String>(
                                                           recipientNameChildItem,
                                                           '[ERROR recipientName]',
@@ -400,7 +405,7 @@ class _SentMessagesWidgetState extends State<SentMessagesWidget> {
                                                                     4.0,
                                                                     0.0,
                                                                     0.0),
-                                                        child: Text(
+                                                        child: AutoSizeText(
                                                           valueOrDefault<
                                                               String>(
                                                             GetSentMessagesCall

@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_listings_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -41,25 +42,25 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
       );
 
       if ((_model.myListings?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text((_model.myListings?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text((_model.myListings?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -134,6 +135,9 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                         (_model.myListings?.jsonBody ?? ''),
                       )?.toList() ??
                       [];
+                  if (productIdChild.isEmpty) {
+                    return NoListingsWidget();
+                  }
 
                   return RefreshIndicator(
                     color: FlutterFlowTheme.of(context).primary,
@@ -340,29 +344,18 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                 children: [
                                   Stack(
                                     children: [
-                                      InkWell(
-                                        splashColor: Colors.transparent,
-                                        focusColor: Colors.transparent,
-                                        hoverColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                        onTap: () async {
-                                          context.pushNamed(
-                                              ProductDetailsWidget.routeName);
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          child: Image.network(
-                                            (GetMyListingsCall.imagePath(
-                                              (_model.myListings?.jsonBody ??
-                                                  ''),
-                                            )!
-                                                .elementAtOrNull(
-                                                    productIdChildIndex))!,
-                                            width: double.infinity,
-                                            height: 120.0,
-                                            fit: BoxFit.cover,
-                                          ),
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        child: Image.network(
+                                          (GetMyListingsCall.imagePath(
+                                            (_model.myListings?.jsonBody ?? ''),
+                                          )!
+                                              .elementAtOrNull(
+                                                  productIdChildIndex))!,
+                                          width: double.infinity,
+                                          height: 120.0,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                       Align(
@@ -487,7 +480,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetMyListingsCall.sellerCollege(
                                                   (_model.myListings
@@ -540,7 +533,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetMyListingsCall
                                                     .productCategory(
@@ -594,7 +587,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetMyListingsCall.postedDate(
                                                   (_model.myListings

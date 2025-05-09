@@ -322,6 +322,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       focusNode: _model.passwordFocusNode,
                                       autofocus: true,
                                       autofillHints: [AutofillHints.password],
+                                      textInputAction: TextInputAction.go,
                                       obscureText: !_model.passwordVisibility,
                                       decoration: InputDecoration(
                                         labelText: 'Password',

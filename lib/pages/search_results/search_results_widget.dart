@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_search_results_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -39,25 +40,25 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
       );
 
       if ((_model.searchProductsAPI?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text((_model.searchProductsAPI?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text((_model.searchProductsAPI?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     _model.textFieldResultsTextController ??=
@@ -294,6 +295,11 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                           (_model.searchProductsAPI?.jsonBody ?? ''),
                         )?.toList() ??
                         [];
+                    if (productIDChild.isEmpty) {
+                      return Center(
+                        child: NoSearchResultsWidget(),
+                      );
+                    }
 
                     return RefreshIndicator(
                       color: FlutterFlowTheme.of(context).primary,
@@ -506,30 +512,20 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                   children: [
                                     Stack(
                                       children: [
-                                        InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            context.pushNamed(
-                                                ProductDetailsWidget.routeName);
-                                          },
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            child: Image.network(
-                                              (SearchProductsCall.imagePath(
-                                                (_model.searchProductsAPI
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              )!
-                                                  .elementAtOrNull(
-                                                      productIDChildIndex))!,
-                                              width: double.infinity,
-                                              height: 120.0,
-                                              fit: BoxFit.cover,
-                                            ),
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Image.network(
+                                            (SearchProductsCall.imagePaths(
+                                              (_model.searchProductsAPI
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            )!
+                                                .elementAtOrNull(
+                                                    productIDChildIndex))!,
+                                            width: double.infinity,
+                                            height: 120.0,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                         Align(
@@ -609,12 +605,13 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                     0.0, 0.0, 0.0, 5.0),
                                             child: AutoSizeText(
                                               valueOrDefault<String>(
-                                                SearchProductsCall.productName(
+                                                SearchProductsCall
+                                                    .productNameLegit(
                                                   (_model.searchProductsAPI
                                                           ?.jsonBody ??
                                                       ''),
                                                 )?.elementAtOrNull(
-                                                    productIDChildItem),
+                                                    productIDChildIndex),
                                                 '[ERROR productName]',
                                               ),
                                               maxLines: 1,
@@ -660,7 +657,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                         .secondaryText,
                                                 size: 16.0,
                                               ),
-                                              Text(
+                                              AutoSizeText(
                                                 valueOrDefault<String>(
                                                   SearchProductsCall.sellerName(
                                                     (_model.searchProductsAPI
@@ -714,7 +711,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                         .secondaryText,
                                                 size: 16.0,
                                               ),
-                                              Text(
+                                              AutoSizeText(
                                                 valueOrDefault<String>(
                                                   SearchProductsCall
                                                       .sellerCollege(
@@ -769,7 +766,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                         .secondaryText,
                                                 size: 16.0,
                                               ),
-                                              Text(
+                                              AutoSizeText(
                                                 valueOrDefault<String>(
                                                   SearchProductsCall
                                                       .productCategory(
@@ -824,7 +821,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                         .secondaryText,
                                                 size: 16.0,
                                               ),
-                                              Text(
+                                              AutoSizeText(
                                                 valueOrDefault<String>(
                                                   SearchProductsCall.postedDate(
                                                     (_model.searchProductsAPI

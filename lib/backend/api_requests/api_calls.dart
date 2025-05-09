@@ -526,7 +526,7 @@ class SearchProductsCall {
           .map((x) => castToType<int>(x))
           .withoutNulls
           .toList();
-  static List<String>? productName(dynamic response) => (getJsonField(
+  static List<String>? productNameLegit(dynamic response) => (getJsonField(
         response,
         r'''$[:].name''',
         true,
@@ -562,15 +562,6 @@ class SearchProductsCall {
           .map((x) => castToType<double>(x))
           .withoutNulls
           .toList();
-  static List<String>? imagePath(dynamic response) => (getJsonField(
-        response,
-        r'''$[:].imagePaths''',
-        true,
-      ) as List?)
-          ?.withoutNulls
-          .map((x) => castToType<String>(x))
-          .withoutNulls
-          .toList();
   static List<String>? sellerName(dynamic response) => (getJsonField(
         response,
         r'''$[:].sellerName''',
@@ -601,6 +592,15 @@ class SearchProductsCall {
   static List<String>? postedDate(dynamic response) => (getJsonField(
         response,
         r'''$[:].postedDate''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  static List<String>? imagePaths(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].imagePath''',
         true,
       ) as List?)
           ?.withoutNulls

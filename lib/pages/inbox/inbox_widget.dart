@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_messages_yet_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -37,25 +38,25 @@ class _InboxWidgetState extends State<InboxWidget> {
       );
 
       if ((_model.getInboxAPI?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text((_model.getInboxAPI?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text((_model.getInboxAPI?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -150,6 +151,11 @@ class _InboxWidgetState extends State<InboxWidget> {
                         (_model.getInboxAPI?.jsonBody ?? ''),
                       )?.toList() ??
                       [];
+                  if (senderNameChild.isEmpty) {
+                    return Center(
+                      child: NoMessagesYetWidget(),
+                    );
+                  }
 
                   return RefreshIndicator(
                     color: FlutterFlowTheme.of(context).primary,

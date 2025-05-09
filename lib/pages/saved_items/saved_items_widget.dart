@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_saved_products_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -38,25 +39,25 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
       );
 
       if ((_model.getSavedItemsAPI?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text((_model.getSavedItemsAPI?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text((_model.getSavedItemsAPI?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -131,6 +132,11 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                         (_model.getSavedItemsAPI?.jsonBody ?? ''),
                       )?.toList() ??
                       [];
+                  if (productIDChild.isEmpty) {
+                    return Center(
+                      child: NoSavedProductsWidget(),
+                    );
+                  }
 
                   return RefreshIndicator(
                     color: FlutterFlowTheme.of(context).primary,
@@ -487,7 +493,7 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetSavedItemsCall
                                                     .savedSellerCollege(
@@ -541,7 +547,7 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetSavedItemsCall.savedCategory(
                                                   (_model.getSavedItemsAPI
@@ -588,22 +594,22 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Icon(
-                                              Icons.access_time_rounded,
+                                              Icons.person,
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
                                               size: 16.0,
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               valueOrDefault<String>(
                                                 GetSavedItemsCall
-                                                    .savedPostedDate(
+                                                    .savedSellerName(
                                                   (_model.getSavedItemsAPI
                                                           ?.jsonBody ??
                                                       ''),
                                                 )?.elementAtOrNull(
                                                     productIDChildIndex),
-                                                '[ERROR dateTime]',
+                                                '[ERROR name]',
                                               ),
                                               maxLines: 1,
                                               style: FlutterFlowTheme.of(

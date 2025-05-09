@@ -287,6 +287,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                           safeSetState(
                               () => _model.choiceChipsValue = val?.firstOrNull);
                           FFAppState().searchQuery = _model.choiceChipsValue!;
+                          safeSetState(() {});
 
                           context.pushNamed(SearchPageWidget.routeName);
                         },

@@ -1,4 +1,5 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/no_products_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -40,25 +41,25 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
       );
 
       if ((_model.allProductts?.succeeded ?? true)) {
+        safeSetState(() {});
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text((_model.allProductts?.bodyText ?? '')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
-
-      await showDialog(
-        context: context,
-        builder: (alertDialogContext) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text((_model.allProductts?.bodyText ?? '')),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(alertDialogContext),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
@@ -121,6 +122,11 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                             (_model.allProductts?.jsonBody ?? ''),
                           )?.toList() ??
                           [];
+                      if (productIDChild.isEmpty) {
+                        return Center(
+                          child: NoProductsWidget(),
+                        );
+                      }
 
                       return RefreshIndicator(
                         color: FlutterFlowTheme.of(context).primary,
@@ -473,7 +479,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                       .secondaryText,
                                                   size: 16.0,
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   valueOrDefault<String>(
                                                     GetAllProductsCall
                                                         .sellerName(
@@ -528,7 +534,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                       .secondaryText,
                                                   size: 16.0,
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   valueOrDefault<String>(
                                                     GetAllProductsCall
                                                         .sellerCollege(
@@ -583,7 +589,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                       .secondaryText,
                                                   size: 16.0,
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   valueOrDefault<String>(
                                                     GetAllProductsCall.category(
                                                       (_model.allProductts
@@ -637,7 +643,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                       .secondaryText,
                                                   size: 16.0,
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   valueOrDefault<String>(
                                                     GetAllProductsCall
                                                         .postedDate(

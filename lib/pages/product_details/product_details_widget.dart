@@ -1,5 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -292,11 +294,41 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                           Align(
                                             alignment:
                                                 AlignmentDirectional(0.0, 0.0),
-                                            child: Image.network(
-                                              productImagesItem,
-                                              width: double.infinity,
-                                              height: 400.0,
-                                              fit: BoxFit.contain,
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type:
+                                                        PageTransitionType.fade,
+                                                    child:
+                                                        FlutterFlowExpandedImageView(
+                                                      image: Image.network(
+                                                        productImagesItem,
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                                      allowRotation: false,
+                                                      tag: productImagesItem,
+                                                      useHeroAnimation: true,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Hero(
+                                                tag: productImagesItem,
+                                                transitionOnUserGestures: true,
+                                                child: Image.network(
+                                                  productImagesItem,
+                                                  width: double.infinity,
+                                                  height: 350.0,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
                                             ).animateOnPageLoad(animationsMap[
                                                 'imageOnPageLoadAnimation']!),
                                           ),
@@ -355,7 +387,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 0.0, 0.0),
-                      child: Text(
+                      child: AutoSizeText(
                         FFAppState().openedName,
                         style: FlutterFlowTheme.of(context)
                             .headlineMedium
@@ -385,7 +417,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               24.0, 4.0, 0.0, 0.0),
-                          child: Text(
+                          child: AutoSizeText(
                             'Sold by:',
                             style: FlutterFlowTheme.of(context)
                                 .labelMedium
@@ -412,7 +444,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               4.0, 4.0, 0.0, 0.0),
-                          child: Text(
+                          child: AutoSizeText(
                             FFAppState().openedSellerName,
                             style: FlutterFlowTheme.of(context)
                                 .labelMedium
@@ -443,7 +475,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               24.0, 4.0, 0.0, 0.0),
-                          child: Text(
+                          child: AutoSizeText(
                             FFAppState().openedPostedDate,
                             style: FlutterFlowTheme.of(context)
                                 .labelSmall
@@ -472,7 +504,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(24.0, 4.0, 0.0, 0.0),
-                      child: Text(
+                      child: AutoSizeText(
                         formatNumber(
                           FFAppState().openedPrice,
                           formatType: FormatType.decimal,
@@ -503,7 +535,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                     Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 24.0, 0.0),
-                      child: Text(
+                      child: AutoSizeText(
                         FFAppState().openedDescription,
                         style:
                             FlutterFlowTheme.of(context).labelMedium.override(
@@ -562,7 +594,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12.0, 0.0, 12.0, 0.0),
-                                      child: Text(
+                                      child: AutoSizeText(
                                         FFAppState().openedSellerCollege,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
@@ -622,7 +654,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12.0, 0.0, 12.0, 0.0),
-                                      child: Text(
+                                      child: AutoSizeText(
                                         FFAppState().openedCategory,
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall

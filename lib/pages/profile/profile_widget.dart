@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import '/index.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -259,7 +260,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  AutoSizeText(
                                     FFAppState().persistFullName,
                                     style: FlutterFlowTheme.of(context)
                                         .headlineSmall
@@ -289,7 +290,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 4.0, 0.0, 0.0),
-                                    child: Text(
+                                    child: AutoSizeText(
                                       FFAppState().persistEmail,
                                       style: FlutterFlowTheme.of(context)
                                           .labelMedium
@@ -316,7 +317,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                           ),
                                     ),
                                   ),
-                                  Text(
+                                  AutoSizeText(
                                     FFAppState().persistCollege,
                                     style: FlutterFlowTheme.of(context)
                                         .labelSmall
