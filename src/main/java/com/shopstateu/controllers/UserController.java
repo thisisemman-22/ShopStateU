@@ -76,10 +76,12 @@ public class UserController {
             @RequestParam String password) {
         Optional<User> user = userService.loginUser(email, password);
         if (user.isPresent()) {
-            String token = jwtUtil.generateToken(user.get().getEmail());
+            long expirationTimeInMillis = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
+            String token = jwtUtil.generateToken(user.get().getEmail(), expirationTimeInMillis);
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("userId", user.get().getId());
+            response.put("expiresIn", expirationTimeInMillis / 1000); // Expiry time in seconds
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(401).body("Invalid email or password");

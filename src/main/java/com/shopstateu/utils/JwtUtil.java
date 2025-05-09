@@ -24,6 +24,15 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateToken(String username, long expirationTimeInMillis) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMillis))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String validateToken(String token) {
         try {
             return Jwts.parserBuilder()
