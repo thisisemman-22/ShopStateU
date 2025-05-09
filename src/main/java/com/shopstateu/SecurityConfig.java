@@ -46,7 +46,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/api/users/register", "/api/users/login", "/api/users/profile", "/uploads/**", "/api/uploads/**").permitAll()
+                .requestMatchers("/", "/api/users/register", "/api/users/login", "/api/products/**", "/api/messages/**", "/api/saved-items", "/uploads/**").permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -80,6 +80,7 @@ public class SecurityConfig {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS"); // Allow preflight requests
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
 
