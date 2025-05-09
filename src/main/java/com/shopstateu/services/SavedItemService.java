@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,7 +44,14 @@ public class SavedItemService {
 
     public SavedItem saveItemByUserEmail(String email, Long productId) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return saveItem(user.getId(), productId);
+        SavedItem savedItem = saveItem(user.getId(), productId);
+
+        // Format the current date in MM/DD HH:MM AM/PM format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm a");
+        String formattedDate = dateFormat.format(new Date());
+        savedItem.setDate(formattedDate);
+
+        return savedItemRepository.save(savedItem);
     }
 
     @Transactional

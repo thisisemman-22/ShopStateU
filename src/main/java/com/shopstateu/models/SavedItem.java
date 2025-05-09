@@ -16,6 +16,9 @@ public class SavedItem {
     @Column(nullable = false)
     private Long productId;
 
+    @Column(nullable = true)
+    private String date;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -39,5 +42,13 @@ public class SavedItem {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
