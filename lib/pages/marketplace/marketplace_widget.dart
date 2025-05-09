@@ -381,16 +381,11 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                       AlignmentDirectional(
                                                           0.0, 0.0),
                                                   child: Text(
-                                                    valueOrDefault<String>(
-                                                      (GetAllProductsCall.price(
-                                                        (_model.allProductts
-                                                                ?.jsonBody ??
-                                                            ''),
-                                                      )?.elementAtOrNull(
-                                                              productIDChildIndex))
-                                                          ?.toString(),
-                                                      '[errorPrice]',
-                                                    ),
+                                                    'P${(GetAllProductsCall.price(
+                                                      (_model.allProductts
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    )?.elementAtOrNull(productIDChildIndex))?.toString()}',
                                                     style: FlutterFlowTheme.of(
                                                             context)
                                                         .bodySmall
