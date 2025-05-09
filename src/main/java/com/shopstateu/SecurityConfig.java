@@ -46,7 +46,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/api/users/register", "/api/users/login", "/api/products/**", "/api/messages/**", "/api/saved-items", "/uploads/**").permitAll()
+                .requestMatchers("/", "/api/users/register", "/api/users/login", "/api/users/profile/**", "/api/products/**", "/api/messages/**", "/api/saved-items", "/uploads/**").permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -75,7 +75,7 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://shopstateu.flutterflow.app"); // Allow only the web app origin
+        config.addAllowedOriginPattern("*"); // Allow all origins
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
