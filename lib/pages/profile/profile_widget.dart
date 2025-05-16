@@ -135,118 +135,145 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
                                     var _shouldSetState = false;
-                                    final selectedMedia =
-                                        await selectMediaWithSourceBottomSheet(
-                                      context: context,
-                                      maxWidth: 500.00,
-                                      maxHeight: 500.00,
-                                      allowPhoto: true,
-                                    );
-                                    if (selectedMedia != null &&
-                                        selectedMedia.every((m) =>
-                                            validateFileFormat(
-                                                m.storagePath, context))) {
-                                      safeSetState(
-                                          () => _model.isDataUploading = true);
-                                      var selectedUploadedFiles =
-                                          <FFUploadedFile>[];
-
-                                      try {
-                                        selectedUploadedFiles = selectedMedia
-                                            .map((m) => FFUploadedFile(
-                                                  name: m.storagePath
-                                                      .split('/')
-                                                      .last,
-                                                  bytes: m.bytes,
-                                                  height: m.dimensions?.height,
-                                                  width: m.dimensions?.width,
-                                                  blurHash: m.blurHash,
-                                                ))
-                                            .toList();
-                                      } finally {
-                                        _model.isDataUploading = false;
-                                      }
-                                      if (selectedUploadedFiles.length ==
-                                          selectedMedia.length) {
-                                        safeSetState(() {
-                                          _model.uploadedLocalFile =
-                                              selectedUploadedFiles.first;
-                                        });
-                                      } else {
-                                        safeSetState(() {});
-                                        return;
-                                      }
-                                    }
-
-                                    if ((_model.uploadedLocalFile.bytes
-                                                ?.isNotEmpty ??
-                                            false)) {
-                                      _model.updateProfileAPI =
-                                          await UpdateProfilePictureCall.call(
-                                        userId: FFAppState().PersistUserId,
-                                        profilePicture:
-                                            _model.uploadedLocalFile,
-                                        bearerToken: FFAppState().bearerToken,
+                                    if (isAndroid) {
+                                      final selectedMedia =
+                                          await selectMediaWithSourceBottomSheet(
+                                        context: context,
+                                        maxWidth: 500.00,
+                                        maxHeight: 500.00,
+                                        allowPhoto: true,
                                       );
+                                      if (selectedMedia != null &&
+                                          selectedMedia.every((m) =>
+                                              validateFileFormat(
+                                                  m.storagePath, context))) {
+                                        safeSetState(() =>
+                                            _model.isDataUploading = true);
+                                        var selectedUploadedFiles =
+                                            <FFUploadedFile>[];
 
-                                      _shouldSetState = true;
-                                      if ((_model.updateProfileAPI?.succeeded ??
-                                          true)) {
-                                        FFAppState().persistProfilePicture =
-                                            getJsonField(
-                                          (_model.updateProfileAPI?.jsonBody ??
-                                              ''),
-                                          r'''$.profilePicture''',
-                                        ).toString();
-                                        safeSetState(() {});
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                  'Profile Picture Updated'),
-                                              content: Text(
-                                                  'Your profile picture has been successfully updated.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Ok'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        if (_shouldSetState)
+                                        try {
+                                          selectedUploadedFiles = selectedMedia
+                                              .map((m) => FFUploadedFile(
+                                                    name: m.storagePath
+                                                        .split('/')
+                                                        .last,
+                                                    bytes: m.bytes,
+                                                    height:
+                                                        m.dimensions?.height,
+                                                    width: m.dimensions?.width,
+                                                    blurHash: m.blurHash,
+                                                  ))
+                                              .toList();
+                                        } finally {
+                                          _model.isDataUploading = false;
+                                        }
+                                        if (selectedUploadedFiles.length ==
+                                            selectedMedia.length) {
+                                          safeSetState(() {
+                                            _model.uploadedLocalFile =
+                                                selectedUploadedFiles.first;
+                                          });
+                                        } else {
                                           safeSetState(() {});
-                                        return;
-                                      } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('Error'),
-                                              content: Text((_model
-                                                      .updateProfileAPI
-                                                      ?.bodyText ??
-                                                  '')),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Ok'),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                          return;
+                                        }
+                                      }
+
+                                      if ((_model.uploadedLocalFile.bytes
+                                                  ?.isNotEmpty ??
+                                              false)) {
+                                        _model.updateProfileAPI =
+                                            await UpdateProfilePictureCall.call(
+                                          userId: FFAppState().PersistUserId,
+                                          profilePicture:
+                                              _model.uploadedLocalFile,
+                                          bearerToken: FFAppState().bearerToken,
                                         );
+
+                                        _shouldSetState = true;
+                                        if ((_model
+                                                .updateProfileAPI?.succeeded ??
+                                            true)) {
+                                          FFAppState().persistProfilePicture =
+                                              getJsonField(
+                                            (_model.updateProfileAPI
+                                                    ?.jsonBody ??
+                                                ''),
+                                            r'''$.profilePicture''',
+                                          ).toString();
+                                          safeSetState(() {});
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Profile Picture Updated'),
+                                                content: Text(
+                                                    'Your profile picture has been successfully updated.'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Ok'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
+                                        } else {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text('Error'),
+                                                content: Text((_model
+                                                        .updateProfileAPI
+                                                        ?.bodyText ??
+                                                    '')),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Ok'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
+                                        }
+                                      } else {
                                         if (_shouldSetState)
                                           safeSetState(() {});
                                         return;
                                       }
                                     } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title:
+                                                Text('Feature Not Available'),
+                                            content: Text(
+                                                'Unfortunately, updating of profile pictures is only available in our app. We apologize for the inconvenience.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                       if (_shouldSetState) safeSetState(() {});
                                       return;
                                     }
