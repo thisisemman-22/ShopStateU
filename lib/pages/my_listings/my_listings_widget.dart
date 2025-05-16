@@ -8,7 +8,6 @@ import '/index.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'my_listings_model.dart';
@@ -637,101 +636,110 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                   ),
                                   Align(
                                     alignment: AlignmentDirectional(0.0, 0.0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 0.0, 0.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(-1.0, 0.0),
-                                            child: FFButtonWidget(
-                                              onPressed: () async {
-                                                var confirmDialogResponse =
-                                                    await showDialog<bool>(
-                                                          context: context,
-                                                          builder:
-                                                              (alertDialogContext) {
-                                                            return AlertDialog(
-                                                              title: Text(
-                                                                  'Mark as Sold'),
-                                                              content: Text(
-                                                                  'Are you sure you want to mark ${GetMyListingsCall.productName(
-                                                                (_model.myListings
-                                                                        ?.jsonBody ??
-                                                                    ''),
-                                                              )?.elementAtOrNull(productIdChildIndex)} as sold?'),
-                                                              actions: [
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          alertDialogContext,
-                                                                          false),
-                                                                  child: Text(
-                                                                      'Cancel'),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.pop(
-                                                                          alertDialogContext,
-                                                                          true),
-                                                                  child: Text(
-                                                                      'Confirm'),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        ) ??
-                                                        false;
-                                                if (confirmDialogResponse) {
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (alertDialogContext) {
-                                                      return AlertDialog(
-                                                        title: Text(
-                                                            'Product Deleted'),
-                                                        content: Text(
-                                                            'Product successfully deleted.'),
-                                                        actions: [
-                                                          TextButton(
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    alertDialogContext),
-                                                            child: Text('Ok'),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-1.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              var confirmDialogResponse =
+                                                  await showDialog<bool>(
+                                                        context: context,
+                                                        builder:
+                                                            (alertDialogContext) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                'Mark as Sold'),
+                                                            content: Text(
+                                                                'Are you sure you want to mark ${GetMyListingsCall.productName(
+                                                              (_model.myListings
+                                                                      ?.jsonBody ??
+                                                                  ''),
+                                                            )?.elementAtOrNull(productIdChildIndex)} as sold?'),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext,
+                                                                        false),
+                                                                child: Text(
+                                                                    'Cancel'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext,
+                                                                        true),
+                                                                child: Text(
+                                                                    'Confirm'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ) ??
+                                                      false;
+                                              if (confirmDialogResponse) {
+                                                await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          'Product Deleted'),
+                                                      content: Text(
+                                                          'Product successfully deleted.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext),
+                                                          child: Text('Ok'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
 
-                                                  safeSetState(() {});
-                                                  return;
-                                                } else {
-                                                  return;
-                                                }
-                                              },
-                                              text: 'Mark as Sold',
-                                              options: FFButtonOptions(
-                                                height: 20.0,
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        16.0, 0.0, 16.0, 0.0),
-                                                iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                textStyle: FlutterFlowTheme.of(
-                                                        context)
-                                                    .titleSmall
-                                                    .override(
-                                                      font: GoogleFonts.poppins(
+                                                safeSetState(() {});
+                                                return;
+                                              } else {
+                                                return;
+                                              }
+                                            },
+                                            text: 'Mark as Sold',
+                                            options: FFButtonOptions(
+                                              width: 105.0,
+                                              height: 20.0,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontStyle,
+                                                        ),
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -743,95 +751,104 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                                 .titleSmall
                                                                 .fontStyle,
                                                       ),
-                                                      color: Colors.white,
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontWeight,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .fontStyle,
-                                                    ),
-                                                elevation: 0.0,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
+                                              elevation: 0.0,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
                                           ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(1.0, 0.0),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 10.0, 0.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  FFAppState().editName =
-                                                      (GetMyListingsCall
-                                                              .productName(
-                                                    (_model.myListings
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!
-                                                          .elementAtOrNull(
-                                                              productIdChildIndex))!;
-                                                  FFAppState().editDescription =
-                                                      (GetMyListingsCall
-                                                              .productDescription(
-                                                    (_model.myListings
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!
-                                                          .elementAtOrNull(
-                                                              productIdChildIndex))!;
-                                                  FFAppState().editCategory =
-                                                      (GetMyListingsCall
-                                                              .productCategory(
-                                                    (_model.myListings
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!
-                                                          .elementAtOrNull(
-                                                              productIdChildIndex))!;
-                                                  FFAppState().editPrice =
-                                                      (GetMyListingsCall
-                                                              .productPrice(
-                                                    (_model.myListings
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  )!
-                                                          .elementAtOrNull(
-                                                              productIdChildIndex))!;
-                                                  FFAppState().editProdId =
-                                                      productIdChildItem;
-                                                  safeSetState(() {});
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-1.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              FFAppState()
+                                                  .editName = (GetMyListingsCall
+                                                      .productName(
+                                                (_model.myListings?.jsonBody ??
+                                                    ''),
+                                              )!
+                                                  .elementAtOrNull(
+                                                      productIdChildIndex))!;
+                                              FFAppState().editDescription =
+                                                  (GetMyListingsCall
+                                                          .productDescription(
+                                                (_model.myListings?.jsonBody ??
+                                                    ''),
+                                              )!
+                                                      .elementAtOrNull(
+                                                          productIdChildIndex))!;
+                                              FFAppState().editCategory =
+                                                  (GetMyListingsCall
+                                                          .productCategory(
+                                                (_model.myListings?.jsonBody ??
+                                                    ''),
+                                              )!
+                                                      .elementAtOrNull(
+                                                          productIdChildIndex))!;
+                                              FFAppState().editPrice =
+                                                  (GetMyListingsCall
+                                                          .productPrice(
+                                                (_model.myListings?.jsonBody ??
+                                                    ''),
+                                              )!
+                                                      .elementAtOrNull(
+                                                          productIdChildIndex))!;
+                                              FFAppState().editProdId =
+                                                  productIdChildItem;
+                                              safeSetState(() {});
 
-                                                  context.pushNamed(
-                                                      EditProductWidget
-                                                          .routeName);
-                                                },
-                                                child: FaIcon(
-                                                  FontAwesomeIcons.pen,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  size: 16.0,
-                                                ),
-                                              ),
+                                              context.pushNamed(
+                                                  EditProductWidget.routeName);
+                                            },
+                                            text: 'Edit',
+                                            options: FFButtonOptions(
+                                              width: 60.0,
+                                              height: 20.0,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontStyle,
+                                                        ),
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                              elevation: 0.0,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

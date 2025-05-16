@@ -178,63 +178,75 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                       }
                                     }
 
-                                    _model.updateProfileAPI =
-                                        await UpdateProfilePictureCall.call(
-                                      userId: FFAppState().PersistUserId,
-                                      profilePicture: _model.uploadedLocalFile,
-                                      bearerToken: FFAppState().bearerToken,
-                                    );
+                                    if ((_model.uploadedLocalFile.bytes
+                                                ?.isNotEmpty ??
+                                            false)) {
+                                      _model.updateProfileAPI =
+                                          await UpdateProfilePictureCall.call(
+                                        userId: FFAppState().PersistUserId,
+                                        profilePicture:
+                                            _model.uploadedLocalFile,
+                                        bearerToken: FFAppState().bearerToken,
+                                      );
 
-                                    _shouldSetState = true;
-                                    if ((_model.updateProfileAPI?.succeeded ??
-                                        true)) {
-                                      FFAppState().persistProfilePicture =
-                                          getJsonField(
-                                        (_model.updateProfileAPI?.jsonBody ??
-                                            ''),
-                                        r'''$.profilePicture''',
-                                      ).toString();
-                                      safeSetState(() {});
-                                      await showDialog(
-                                        context: context,
-                                        builder: (alertDialogContext) {
-                                          return AlertDialog(
-                                            title:
-                                                Text('Profile Picture Updated'),
-                                            content: Text(
-                                                'Your profile picture has been successfully updated.'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('Ok'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                      if (_shouldSetState) safeSetState(() {});
-                                      return;
+                                      _shouldSetState = true;
+                                      if ((_model.updateProfileAPI?.succeeded ??
+                                          true)) {
+                                        FFAppState().persistProfilePicture =
+                                            getJsonField(
+                                          (_model.updateProfileAPI?.jsonBody ??
+                                              ''),
+                                          r'''$.profilePicture''',
+                                        ).toString();
+                                        safeSetState(() {});
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  'Profile Picture Updated'),
+                                              content: Text(
+                                                  'Your profile picture has been successfully updated.'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        if (_shouldSetState)
+                                          safeSetState(() {});
+                                        return;
+                                      } else {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Error'),
+                                              content: Text((_model
+                                                      .updateProfileAPI
+                                                      ?.bodyText ??
+                                                  '')),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        if (_shouldSetState)
+                                          safeSetState(() {});
+                                        return;
+                                      }
                                     } else {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (alertDialogContext) {
-                                          return AlertDialog(
-                                            title: Text('Error'),
-                                            content: Text((_model
-                                                    .updateProfileAPI
-                                                    ?.bodyText ??
-                                                '')),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('Ok'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
                                       if (_shouldSetState) safeSetState(() {});
                                       return;
                                     }

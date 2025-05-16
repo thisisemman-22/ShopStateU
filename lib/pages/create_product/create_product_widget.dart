@@ -1,7 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/not_available_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -123,28 +122,7 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                     ),
                   ].divide(SizedBox(height: 0.0)),
                 ),
-                actions: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 12.0, 8.0),
-                    child: FlutterFlowIconButton(
-                      borderColor: FlutterFlowTheme.of(context).alternate,
-                      borderRadius: 12.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      fillColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                      icon: Icon(
-                        Icons.close_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
-                      ),
-                      onPressed: () async {
-                        context.safePop();
-                      },
-                    ),
-                  ),
-                ],
+                actions: [],
                 centerTitle: false,
                 elevation: 0.0,
               )
