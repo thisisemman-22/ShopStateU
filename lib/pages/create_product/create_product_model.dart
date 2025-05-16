@@ -1,5 +1,4 @@
 import '/backend/api_requests/api_calls.dart';
-import '/components/not_available_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'create_product_widget.dart' show CreateProductWidget;
@@ -66,15 +65,12 @@ class CreateProductModel extends FlutterFlowModel<CreateProductWidget> {
 
   // Stores action output result for [Backend Call - API (Add Product)] action in Button widget.
   ApiCallResponse? addProductAPI;
-  // Model for notAvailable component.
-  late NotAvailableModel notAvailableModel;
 
   @override
   void initState(BuildContext context) {
     productNameTextControllerValidator = _productNameTextControllerValidator;
     descriptionTextControllerValidator = _descriptionTextControllerValidator;
     priceTextControllerValidator = _priceTextControllerValidator;
-    notAvailableModel = createModel(context, () => NotAvailableModel());
   }
 
   @override
@@ -87,7 +83,5 @@ class CreateProductModel extends FlutterFlowModel<CreateProductWidget> {
 
     priceFocusNode?.dispose();
     priceTextController?.dispose();
-
-    notAvailableModel.dispose();
   }
 }

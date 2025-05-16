@@ -968,74 +968,6 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                               ),
                                             ].divide(SizedBox(width: 12.0)),
                                           ),
-                                          if (responsiveVisibility(
-                                            context: context,
-                                            phone: false,
-                                            tablet: false,
-                                          ))
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      16.0, 12.0, 16.0, 12.0),
-                                              child: FFButtonWidget(
-                                                onPressed: () {
-                                                  print('Button pressed ...');
-                                                },
-                                                text: 'Create Product',
-                                                options: FFButtonOptions(
-                                                  width: double.infinity,
-                                                  height: 48.0,
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 24.0, 0.0),
-                                                  iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primary,
-                                                  textStyle: FlutterFlowTheme
-                                                          .of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        font:
-                                                            GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmall
-                                                                  .fontStyle,
-                                                        ),
-                                                        color: Colors.white,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .fontWeight,
-                                                        fontStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .fontStyle,
-                                                      ),
-                                                  elevation: 3.0,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                              ),
-                                            ),
                                         ].divide(SizedBox(height: 12.0)),
                                       ),
                                     ),
@@ -1048,118 +980,121 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                       ),
                     ),
                   ),
-                  if (responsiveVisibility(
-                    context: context,
-                    tabletLandscape: false,
-                    desktop: false,
-                  ))
-                    Container(
-                      constraints: BoxConstraints(
-                        maxWidth: 770.0,
-                      ),
-                      decoration: BoxDecoration(),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 16.0, 12.0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            var _shouldSetState = false;
-                            var confirmDialogResponse = await showDialog<bool>(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Delete Product'),
-                                      content: Text(
-                                          'Are you sure you want to delete ${FFAppState().editName}? This action cannot be undone.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, false),
-                                          child: Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, true),
-                                          child: Text('Yes'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ) ??
-                                false;
-                            if (confirmDialogResponse) {
-                              _model.deleteAPI = await DeleteAnItemCall.call(
-                                productId: FFAppState().editProdId,
-                                bearerToken: FFAppState().bearerToken,
-                              );
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: 770.0,
+                    ),
+                    decoration: BoxDecoration(),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 12.0, 16.0, 12.0),
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          var _shouldSetState = false;
+                          var confirmDialogResponse = await showDialog<bool>(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Delete Product'),
+                                    content: Text(
+                                        'Are you sure you want to delete ${FFAppState().editName}? This action cannot be undone.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, false),
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(
+                                            alertDialogContext, true),
+                                        child: Text('Yes'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ) ??
+                              false;
+                          if (confirmDialogResponse) {
+                            _model.deleteAPI = await DeleteAnItemCall.call(
+                              productId: FFAppState().editProdId,
+                              bearerToken: FFAppState().bearerToken,
+                            );
 
-                              _shouldSetState = true;
-                              if ((_model.deleteAPI?.succeeded ?? true)) {
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Deleted'),
-                                      content:
-                                          Text('Product successfully deleted.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                context.safePop();
-                                if (_shouldSetState) safeSetState(() {});
-                                return;
-                              } else {
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Error'),
-                                      content: Text(
-                                          (_model.deleteAPI?.bodyText ?? '')),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                if (_shouldSetState) safeSetState(() {});
-                                return;
-                              }
+                            _shouldSetState = true;
+                            if ((_model.deleteAPI?.succeeded ?? true)) {
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Deleted'),
+                                    content:
+                                        Text('Product successfully deleted.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              context.safePop();
+                              if (_shouldSetState) safeSetState(() {});
+                              return;
                             } else {
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Error'),
+                                    content: Text(
+                                        (_model.deleteAPI?.bodyText ?? '')),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                               if (_shouldSetState) safeSetState(() {});
                               return;
                             }
-
+                          } else {
                             if (_shouldSetState) safeSetState(() {});
-                          },
-                          text: 'Delete Product',
-                          icon: Icon(
-                            Icons.delete_forever_sharp,
-                            size: 15.0,
-                          ),
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 48.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  font: GoogleFonts.poppins(
+                            return;
+                          }
+
+                          if (_shouldSetState) safeSetState(() {});
+                        },
+                        text: 'Delete Product',
+                        icon: Icon(
+                          Icons.delete_forever_sharp,
+                          size: 15.0,
+                        ),
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 48.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              24.0, 0.0, 24.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: FlutterFlowTheme.of(context).tertiary,
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    font: GoogleFonts.poppins(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .fontWeight,
@@ -1167,157 +1102,119 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                         .titleSmall
                                         .fontStyle,
                                   ),
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                ),
-                            elevation: 3.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
+                          elevation: 3.0,
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
                           ),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                  if (responsiveVisibility(
-                    context: context,
-                    tabletLandscape: false,
-                    desktop: false,
-                  ))
-                    Container(
-                      constraints: BoxConstraints(
-                        maxWidth: 770.0,
-                      ),
-                      decoration: BoxDecoration(),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 12.0, 16.0, 12.0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            var _shouldSetState = false;
-                            if (_model.productNameTextController.text != '') {
-                              if (_model.descriptionTextController.text != '') {
-                                if (_model.priceTextController.text != '') {
-                                  var confirmDialogResponse =
-                                      await showDialog<bool>(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Edit Product'),
-                                                content: Text(
-                                                    'Are you sure you want to edit this product?'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            false),
-                                                    child: Text('Cancel'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext,
-                                                            true),
-                                                    child: Text('Yes'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ) ??
-                                          false;
-                                  if (confirmDialogResponse) {
-                                    _model.updateProductAPI =
-                                        await UpdateProductCall.call(
-                                      bearerToken: FFAppState().bearerToken,
-                                      productId: FFAppState().editProdId,
-                                      productName:
-                                          _model.productNameTextController.text,
-                                      description:
-                                          _model.descriptionTextController.text,
-                                      category: _model.choiceChipsValue,
-                                      price: double.tryParse(
-                                          _model.priceTextController.text),
-                                      userId: FFAppState().PersistUserId,
+                  ),
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: 770.0,
+                    ),
+                    decoration: BoxDecoration(),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          16.0, 12.0, 16.0, 12.0),
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          var _shouldSetState = false;
+                          if (_model.productNameTextController.text != '') {
+                            if (_model.descriptionTextController.text != '') {
+                              if (_model.priceTextController.text != '') {
+                                var confirmDialogResponse =
+                                    await showDialog<bool>(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: Text('Edit Product'),
+                                              content: Text(
+                                                  'Are you sure you want to edit this product?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext,
+                                                          true),
+                                                  child: Text('Yes'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ) ??
+                                        false;
+                                if (confirmDialogResponse) {
+                                  _model.updateProductAPI =
+                                      await UpdateProductCall.call(
+                                    bearerToken: FFAppState().bearerToken,
+                                    productId: FFAppState().editProdId,
+                                    productName:
+                                        _model.productNameTextController.text,
+                                    description:
+                                        _model.descriptionTextController.text,
+                                    category: _model.choiceChipsValue,
+                                    price: double.tryParse(
+                                        _model.priceTextController.text),
+                                    userId: FFAppState().PersistUserId,
+                                  );
+
+                                  _shouldSetState = true;
+                                  if ((_model.updateProductAPI?.succeeded ??
+                                      true)) {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text('Success'),
+                                          content: Text((_model
+                                                  .updateProductAPI?.bodyText ??
+                                              '')),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     );
 
-                                    _shouldSetState = true;
-                                    if ((_model.updateProductAPI?.succeeded ??
-                                        true)) {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (alertDialogContext) {
-                                          return AlertDialog(
-                                            title: Text('Success'),
-                                            content: Text((_model
-                                                    .updateProductAPI
-                                                    ?.bodyText ??
-                                                '')),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('Ok'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-
-                                      context
-                                          .goNamed(MyListingsWidget.routeName);
-                                    } else {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (alertDialogContext) {
-                                          return AlertDialog(
-                                            title: Text('Error'),
-                                            content: Text((_model
-                                                    .updateProductAPI
-                                                    ?.bodyText ??
-                                                '')),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('Ok'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                      if (_shouldSetState) safeSetState(() {});
-                                      return;
-                                    }
+                                    context.goNamed(MyListingsWidget.routeName);
                                   } else {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text('Error'),
+                                          content: Text((_model
+                                                  .updateProductAPI?.bodyText ??
+                                              '')),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                     if (_shouldSetState) safeSetState(() {});
                                     return;
                                   }
                                 } else {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text('No Price Set'),
-                                        content: Text(
-                                            'A price is required. Please try again.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: Text('Ok'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
                                   if (_shouldSetState) safeSetState(() {});
                                   return;
                                 }
@@ -1326,9 +1223,9 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text('No Product Description'),
+                                      title: Text('No Price Set'),
                                       content: Text(
-                                          'A product description is required. Please try again.'),
+                                          'A price is required. Please try again.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
@@ -1347,9 +1244,9 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                 context: context,
                                 builder: (alertDialogContext) {
                                   return AlertDialog(
-                                    title: Text('No Product Name'),
+                                    title: Text('No Product Description'),
                                     content: Text(
-                                        'A product name is required. Please try again.'),
+                                        'A product description is required. Please try again.'),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
@@ -1363,26 +1260,55 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                               if (_shouldSetState) safeSetState(() {});
                               return;
                             }
-
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title: Text('No Product Name'),
+                                  content: Text(
+                                      'A product name is required. Please try again.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(alertDialogContext),
+                                      child: Text('Ok'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                             if (_shouldSetState) safeSetState(() {});
-                          },
-                          text: 'Save',
-                          icon: Icon(
-                            Icons.save,
-                            size: 15.0,
-                          ),
-                          options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 48.0,
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                24.0, 0.0, 24.0, 0.0),
-                            iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 0.0),
-                            color: FlutterFlowTheme.of(context).primary,
-                            textStyle: FlutterFlowTheme.of(context)
-                                .titleSmall
-                                .override(
-                                  font: GoogleFonts.poppins(
+                            return;
+                          }
+
+                          if (_shouldSetState) safeSetState(() {});
+                        },
+                        text: 'Save',
+                        icon: Icon(
+                          Icons.save,
+                          size: 15.0,
+                        ),
+                        options: FFButtonOptions(
+                          width: double.infinity,
+                          height: 48.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              24.0, 0.0, 24.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          color: FlutterFlowTheme.of(context).primary,
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleSmall.override(
+                                    font: GoogleFonts.poppins(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleSmall
                                         .fontWeight,
@@ -1390,25 +1316,16 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                         .titleSmall
                                         .fontStyle,
                                   ),
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                ),
-                            elevation: 3.0,
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(8.0),
+                          elevation: 3.0,
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1.0,
                           ),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

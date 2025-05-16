@@ -1,5 +1,4 @@
 import '/backend/api_requests/api_calls.dart';
-import '/components/not_available_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -1289,87 +1288,6 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                                   ].divide(
                                                       SizedBox(width: 12.0)),
                                                 ),
-                                                if (responsiveVisibility(
-                                                  context: context,
-                                                  phone: false,
-                                                  tablet: false,
-                                                ))
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                16.0,
-                                                                12.0,
-                                                                16.0,
-                                                                12.0),
-                                                    child: FFButtonWidget(
-                                                      onPressed: () {
-                                                        print(
-                                                            'Button pressed ...');
-                                                      },
-                                                      text: 'Create Product',
-                                                      options: FFButtonOptions(
-                                                        width: double.infinity,
-                                                        height: 48.0,
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    24.0,
-                                                                    0.0,
-                                                                    24.0,
-                                                                    0.0),
-                                                        iconPadding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary,
-                                                        textStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .override(
-                                                                  font: GoogleFonts
-                                                                      .poppins(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .titleSmall
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  color: Colors
-                                                                      .white,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmall
-                                                                      .fontStyle,
-                                                                ),
-                                                        elevation: 3.0,
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .transparent,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                    ),
-                                                  ),
                                               ].divide(SizedBox(height: 12.0)),
                                             ),
                                           ),
@@ -1382,155 +1300,121 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                             ),
                           ),
                         ),
-                        if (responsiveVisibility(
-                          context: context,
-                          tabletLandscape: false,
-                          desktop: false,
-                        ))
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: 770.0,
-                            ),
-                            decoration: BoxDecoration(),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 12.0, 16.0, 12.0),
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  var _shouldSetState = false;
-                                  if (_model.productNameTextController.text !=
+                        Container(
+                          constraints: BoxConstraints(
+                            maxWidth: 770.0,
+                          ),
+                          decoration: BoxDecoration(),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 12.0, 16.0, 12.0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                var _shouldSetState = false;
+                                if (_model.productNameTextController.text !=
+                                        '') {
+                                  if (_model.descriptionTextController.text !=
                                           '') {
-                                    if (_model.descriptionTextController.text !=
-                                            '') {
-                                      if (_model.priceTextController.text !=
-                                              '') {
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title:
-                                                          Text('Add a Product'),
-                                                      content: Text(
-                                                          'Are you sure you want to sell ${_model.productNameTextController.text}?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child:
-                                                              Text('Confirm'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          _model.addProductAPI =
-                                              await AddProductCall.call(
-                                            productName: _model
-                                                .productNameTextController.text,
-                                            description: _model
-                                                .descriptionTextController.text,
-                                            category: _model.choiceChipsValue,
-                                            price: double.tryParse(_model
-                                                .priceTextController.text),
-                                            sellerName:
-                                                FFAppState().persistFullName,
-                                            sellerCollege:
-                                                FFAppState().persistCollege,
-                                            userId: FFAppState().PersistUserId,
-                                            imagesList:
-                                                _model.uploadedLocalFiles,
-                                            bearerToken:
-                                                FFAppState().bearerToken,
-                                          );
+                                    if (_model.priceTextController.text != '') {
+                                      var confirmDialogResponse =
+                                          await showDialog<bool>(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title:
+                                                        Text('Add a Product'),
+                                                    content: Text(
+                                                        'Are you sure you want to sell ${_model.productNameTextController.text}?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                false),
+                                                        child: Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                true),
+                                                        child: Text('Confirm'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ) ??
+                                              false;
+                                      if (confirmDialogResponse) {
+                                        _model.addProductAPI =
+                                            await AddProductCall.call(
+                                          productName: _model
+                                              .productNameTextController.text,
+                                          description: _model
+                                              .descriptionTextController.text,
+                                          category: _model.choiceChipsValue,
+                                          price: double.tryParse(
+                                              _model.priceTextController.text),
+                                          sellerName:
+                                              FFAppState().persistFullName,
+                                          sellerCollege:
+                                              FFAppState().persistCollege,
+                                          userId: FFAppState().PersistUserId,
+                                          imagesList: _model.uploadedLocalFiles,
+                                          bearerToken: FFAppState().bearerToken,
+                                        );
 
-                                          _shouldSetState = true;
-                                          if ((_model
-                                                  .addProductAPI?.succeeded ??
-                                              true)) {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text('Product Added'),
-                                                  content: Text(
-                                                      '${_model.productNameTextController.text} has successfully been added!'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext),
-                                                      child: Text('Ok'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                            context.safePop();
-                                            if (_shouldSetState)
-                                              safeSetState(() {});
-                                            return;
-                                          } else {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text('Error'),
-                                                  content: Text((_model
-                                                          .addProductAPI
-                                                          ?.bodyText ??
-                                                      '')),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext),
-                                                      child: Text('Ok'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                            if (_shouldSetState)
-                                              safeSetState(() {});
-                                            return;
-                                          }
+                                        _shouldSetState = true;
+                                        if ((_model.addProductAPI?.succeeded ??
+                                            true)) {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text('Product Added'),
+                                                content: Text(
+                                                    '${_model.productNameTextController.text} has successfully been added!'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Ok'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          context.safePop();
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
                                         } else {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text('Error'),
+                                                content: Text((_model
+                                                        .addProductAPI
+                                                        ?.bodyText ??
+                                                    '')),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Ok'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                           if (_shouldSetState)
                                             safeSetState(() {});
                                           return;
                                         }
                                       } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('No Price Set'),
-                                              content: Text(
-                                                  'A price is required. Please try again.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Ok'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
                                         if (_shouldSetState)
                                           safeSetState(() {});
                                         return;
@@ -1540,10 +1424,9 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                         context: context,
                                         builder: (alertDialogContext) {
                                           return AlertDialog(
-                                            title:
-                                                Text('No Product Description'),
+                                            title: Text('No Price Set'),
                                             content: Text(
-                                                'A product description is required. Try again.'),
+                                                'A price is required. Please try again.'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () => Navigator.pop(
@@ -1562,9 +1445,9 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                       context: context,
                                       builder: (alertDialogContext) {
                                         return AlertDialog(
-                                          title: Text('No Product Name'),
+                                          title: Text('No Product Description'),
                                           content: Text(
-                                              'A product name is required. Try again.'),
+                                              'A product description is required. Try again.'),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(
@@ -1578,33 +1461,43 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                     if (_shouldSetState) safeSetState(() {});
                                     return;
                                   }
-
+                                } else {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('No Product Name'),
+                                        content: Text(
+                                            'A product name is required. Try again.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                   if (_shouldSetState) safeSetState(() {});
-                                },
-                                text: 'Create Product',
-                                options: FFButtonOptions(
-                                  width: double.infinity,
-                                  height: 48.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        font: GoogleFonts.poppins(
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontStyle,
-                                        ),
-                                        color: Colors.white,
-                                        letterSpacing: 0.0,
+                                  return;
+                                }
+
+                                if (_shouldSetState) safeSetState(() {});
+                              },
+                              text: 'Create Product',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 48.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 0.0, 24.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).primary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      font: GoogleFonts.poppins(
                                         fontWeight: FlutterFlowTheme.of(context)
                                             .titleSmall
                                             .fontWeight,
@@ -1612,25 +1505,28 @@ class _CreateProductWidgetState extends State<CreateProductWidget> {
                                             .titleSmall
                                             .fontStyle,
                                       ),
-                                  elevation: 3.0,
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .fontStyle,
+                                    ),
+                                elevation: 3.0,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
                                 ),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
                           ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-              if (isAndroid == false)
-                wrapWithModel(
-                  model: _model.notAvailableModel,
-                  updateCallback: () => safeSetState(() {}),
-                  child: NotAvailableWidget(),
                 ),
             ],
           ),
