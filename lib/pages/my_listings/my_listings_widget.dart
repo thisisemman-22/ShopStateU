@@ -165,7 +165,6 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                         mainAxisSpacing: 6.0,
                         childAspectRatio: 0.69,
                       ),
-                      primary: false,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: productIdChild.length,
@@ -491,6 +490,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                 '[ERROR college]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall
@@ -545,6 +545,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                 '[ERROR category]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall
@@ -598,6 +599,7 @@ class _MyListingsWidgetState extends State<MyListingsWidget> {
                                                 '[ERROR dateTime]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall

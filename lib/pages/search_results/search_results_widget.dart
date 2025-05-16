@@ -327,7 +327,6 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                           mainAxisSpacing: 6.0,
                           childAspectRatio: 0.69,
                         ),
-                        primary: false,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: productIDChild.length,
@@ -549,14 +548,11 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                 alignment: AlignmentDirectional(
                                                     0.0, 0.0),
                                                 child: Text(
-                                                  valueOrDefault<String>(
-                                                    'P${(SearchProductsCall.productPriceLegit(
-                                                      (_model.searchProductsAPI
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    )?.elementAtOrNull(productIDChildItem))?.toString()}',
-                                                    '[errorPrice]',
-                                                  ),
+                                                  'P${(SearchProductsCall.daLegitShouldWorkPrice(
+                                                    (_model.searchProductsAPI
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  )?.elementAtOrNull(productIDChildIndex))?.toString()}',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodySmall
@@ -668,6 +664,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                   '[errorSellerName]',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 8.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall
@@ -723,6 +720,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                   '[errorCollege]',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 8.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall
@@ -778,6 +776,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                   '[errorCategory]',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 8.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall
@@ -832,6 +831,7 @@ class _SearchResultsWidgetState extends State<SearchResultsWidget> {
                                                   '[errorDateTime]',
                                                 ),
                                                 maxLines: 1,
+                                                minFontSize: 8.0,
                                                 style: FlutterFlowTheme.of(
                                                         context)
                                                     .labelSmall

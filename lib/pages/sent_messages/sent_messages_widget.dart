@@ -142,6 +142,7 @@ class _SentMessagesWidgetState extends State<SentMessagesWidget> {
                     },
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
+                      reverse: true,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: recipientNameChild.length,

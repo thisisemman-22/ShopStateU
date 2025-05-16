@@ -188,9 +188,9 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                 .productNameTextController,
                                             focusNode:
                                                 _model.productNameFocusNode,
-                                            autofocus: true,
+                                            autofocus: false,
                                             textCapitalization:
-                                                TextCapitalization.words,
+                                                TextCapitalization.none,
                                             obscureText: false,
                                             decoration: InputDecoration(
                                               labelText: 'Product name...',
@@ -347,7 +347,7 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                     text: newValue.text
                                                         .toCapitalization(
                                                             TextCapitalization
-                                                                .words),
+                                                                .none),
                                                   );
                                                 }),
                                             ],
@@ -357,7 +357,7 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                 .descriptionTextController,
                                             focusNode:
                                                 _model.descriptionFocusNode,
-                                            autofocus: true,
+                                            autofocus: false,
                                             textCapitalization:
                                                 TextCapitalization.none,
                                             obscureText: false,
@@ -531,6 +531,7 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                 ),
                                             maxLines: 9,
                                             minLines: 5,
+                                            maxLength: 255,
                                             cursorColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
@@ -925,6 +926,12 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                                     .bodyLarge
                                                                     .fontStyle,
                                                               ),
+                                                      maxLength: 8,
+                                                      buildCounter: (context,
+                                                              {required currentLength,
+                                                              required isFocused,
+                                                              maxLength}) =>
+                                                          null,
                                                       keyboardType:
                                                           const TextInputType
                                                               .numberWithOptions(
@@ -953,9 +960,6 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                                                           .none),
                                                             );
                                                           }),
-                                                        FilteringTextInputFormatter
-                                                            .allow(
-                                                                RegExp('[0-9]'))
                                                       ],
                                                     ),
                                                   ].divide(
@@ -1198,76 +1202,133 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             var _shouldSetState = false;
-                            var confirmDialogResponse = await showDialog<bool>(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Edit Product'),
-                                      content: Text(
-                                          'Are you sure you want to edit this product?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, false),
-                                          child: Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                              alertDialogContext, true),
-                                          child: Text('Yes'),
-                                        ),
-                                      ],
+                            if (_model.productNameTextController.text != '') {
+                              if (_model.descriptionTextController.text != '') {
+                                if (_model.priceTextController.text != '') {
+                                  var confirmDialogResponse =
+                                      await showDialog<bool>(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text('Edit Product'),
+                                                content: Text(
+                                                    'Are you sure you want to edit this product?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext,
+                                                            false),
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext,
+                                                            true),
+                                                    child: Text('Yes'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ) ??
+                                          false;
+                                  if (confirmDialogResponse) {
+                                    _model.updateProductAPI =
+                                        await UpdateProductCall.call(
+                                      bearerToken: FFAppState().bearerToken,
+                                      productId: FFAppState().editProdId,
+                                      productName:
+                                          _model.productNameTextController.text,
+                                      description:
+                                          _model.descriptionTextController.text,
+                                      category: _model.choiceChipsValue,
+                                      price: double.tryParse(
+                                          _model.priceTextController.text),
+                                      userId: FFAppState().PersistUserId,
                                     );
-                                  },
-                                ) ??
-                                false;
-                            if (confirmDialogResponse) {
-                              _model.updateProductAPI =
-                                  await UpdateProductCall.call(
-                                bearerToken: FFAppState().bearerToken,
-                                productId: FFAppState().editProdId,
-                                productName:
-                                    _model.productNameTextController.text,
-                                description:
-                                    _model.descriptionTextController.text,
-                                category: _model.choiceChipsValue,
-                                price: double.tryParse(
-                                    _model.priceTextController.text),
-                                userId: FFAppState().PersistUserId,
-                              );
 
-                              _shouldSetState = true;
-                              if ((_model.updateProductAPI?.succeeded ??
-                                  true)) {
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Success'),
-                                      content: Text(
-                                          (_model.updateProductAPI?.bodyText ??
-                                              '')),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                    _shouldSetState = true;
+                                    if ((_model.updateProductAPI?.succeeded ??
+                                        true)) {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Success'),
+                                            content: Text((_model
+                                                    .updateProductAPI
+                                                    ?.bodyText ??
+                                                '')),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
 
-                                context.goNamed(MyListingsWidget.routeName);
+                                      context
+                                          .goNamed(MyListingsWidget.routeName);
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text('Error'),
+                                            content: Text((_model
+                                                    .updateProductAPI
+                                                    ?.bodyText ??
+                                                '')),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                      if (_shouldSetState) safeSetState(() {});
+                                      return;
+                                    }
+                                  } else {
+                                    if (_shouldSetState) safeSetState(() {});
+                                    return;
+                                  }
+                                } else {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('No Price Set'),
+                                        content: Text(
+                                            'A price is required. Please try again.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  if (_shouldSetState) safeSetState(() {});
+                                  return;
+                                }
                               } else {
                                 await showDialog(
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text('Error'),
+                                      title: Text('No Product Description'),
                                       content: Text(
-                                          (_model.updateProductAPI?.bodyText ??
-                                              '')),
+                                          'A product description is required. Please try again.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
@@ -1282,6 +1343,23 @@ class _EditProductWidgetState extends State<EditProductWidget> {
                                 return;
                               }
                             } else {
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('No Product Name'),
+                                    content: Text(
+                                        'A product name is required. Please try again.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                               if (_shouldSetState) safeSetState(() {});
                               return;
                             }

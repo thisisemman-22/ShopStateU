@@ -155,7 +155,6 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                             mainAxisSpacing: 6.0,
                             childAspectRatio: 0.69,
                           ),
-                          primary: false,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: productIDChild.length,
@@ -495,6 +494,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                     '[Seller Name]',
                                                   ),
                                                   maxLines: 1,
+                                                  minFontSize: 8.0,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelSmall
@@ -550,6 +550,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                     '[Seller College]',
                                                   ),
                                                   maxLines: 1,
+                                                  minFontSize: 8.0,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelSmall
@@ -604,6 +605,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                     '[Category]',
                                                   ),
                                                   maxLines: 1,
+                                                  minFontSize: 8.0,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelSmall
@@ -659,6 +661,7 @@ class _MarketplaceWidgetState extends State<MarketplaceWidget> {
                                                     '[Posted Date]',
                                                   ),
                                                   maxLines: 1,
+                                                  minFontSize: 8.0,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .labelSmall

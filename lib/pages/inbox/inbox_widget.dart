@@ -164,6 +164,7 @@ class _InboxWidgetState extends State<InboxWidget> {
                     },
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
+                      reverse: true,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: senderNameChild.length,

@@ -164,7 +164,6 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                         mainAxisSpacing: 6.0,
                         childAspectRatio: 0.69,
                       ),
-                      primary: false,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: productIDChild.length,
@@ -505,6 +504,7 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                                 '[ERROR sellerCollege]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall
@@ -558,6 +558,7 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                                 '[ERROR category]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall
@@ -612,6 +613,7 @@ class _SavedItemsWidgetState extends State<SavedItemsWidget> {
                                                 '[ERROR name]',
                                               ),
                                               maxLines: 1,
+                                              minFontSize: 8.0,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall

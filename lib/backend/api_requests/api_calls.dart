@@ -554,15 +554,6 @@ class SearchProductsCall {
           .map((x) => castToType<String>(x))
           .withoutNulls
           .toList();
-  static List<double>? productPriceLegit(dynamic response) => (getJsonField(
-        response,
-        r'''$[:].price''',
-        true,
-      ) as List?)
-          ?.withoutNulls
-          .map((x) => castToType<double>(x))
-          .withoutNulls
-          .toList();
   static List<String>? sellerName(dynamic response) => (getJsonField(
         response,
         r'''$[:].sellerName''',
@@ -606,6 +597,16 @@ class SearchProductsCall {
       ) as List?)
           ?.withoutNulls
           .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  static List<double>? daLegitShouldWorkPrice(dynamic response) =>
+      (getJsonField(
+        response,
+        r'''$[:].price''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<double>(x))
           .withoutNulls
           .toList();
 }
